@@ -1,4 +1,4 @@
-package implied.interest.rates.http4s.server
+package http4sutils.server
 
 import cats.effect.kernel.Async
 import cats.implicits.*
@@ -10,8 +10,6 @@ import org.http4s.Response
 import org.http4s.dsl.Http4sDsl
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.websocket.WebSocketBuilder2
-import org.typelevel.log4cats.Logger
-import org.typelevel.log4cats.LoggerFactory
 import org.http4s.server.Router
 
 final class Server[F[_]: Async: Network](

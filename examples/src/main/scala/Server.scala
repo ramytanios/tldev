@@ -1,14 +1,12 @@
 import cats.effect.IO
 import cats.effect.IOApp
-import cats.effect.implicits.*
-import implied.interest.rates.http4s.server.Server
-import implied.interest.rates.http4s.server.Config
-import implied.interest.rates.http4s.server.EndpointFactory
+import http4sutils.server.Server
+import http4sutils.server.Config
+import http4sutils.server.EndpointFactory
 import io.circe.Codec
 import io.circe.generic.semiauto.*
-import org.slf4j.LoggerFactory
 
-object Main extends IOApp.Simple:
+object ServerMain extends IOApp.Simple:
 
   case class Foo(x: String)
   object Foo:
@@ -31,6 +29,6 @@ object Main extends IOApp.Simple:
     val config = Config("localhost", 8090, 12)
 
     /** server */
-    val httpServer = Server(config, endpoints)
+    val httpServer = Server(config, endpoints, None, None)
 
     httpServer.run

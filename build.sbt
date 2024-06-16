@@ -20,7 +20,6 @@ lazy val V = new {
   val ff4s = "0.24.0"
   val http4s = "0.23.27"
   val ciris = "3.6.0"
-  val log4cats = "2.7.0"
 }
 
 lazy val root =
@@ -43,9 +42,6 @@ lazy val `http4s-utils` = project
         "org.typelevel" %% "cats-effect-std" % V.catsEffect,
         "co.fs2" %% "fs2-core" % V.fs2,
         "co.fs2" %% "fs2-io" % V.fs2,
-        "org.typelevel" %% "kittens" % V.kittens,
-        "org.typelevel" %% "cats-time" % V.catsTime,
-        "org.typelevel" %% "literally" % V.literally,
         "org.typelevel" %% "mouse" % V.mouse,
         "org.http4s" %% "http4s-dsl" % V.http4s,
         "org.http4s" %% "http4s-circe" % V.http4s,

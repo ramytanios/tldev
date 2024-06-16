@@ -1,4 +1,4 @@
-package implied.interest.rates.http4s.server
+package http4sutils.server
 
 case class Config(
     host: String,

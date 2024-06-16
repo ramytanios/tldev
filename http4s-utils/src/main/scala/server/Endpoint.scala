@@ -1,4 +1,4 @@
-package implied.interest.rates.http4s.server
+package http4sutils.server
 
 import org.http4s.HttpRoutes
 import org.http4s.server.websocket.WebSocketBuilder2
