@@ -20,15 +20,14 @@ object ServerMain extends IOApp.Simple:
 
     /** endpoints */
     val ef = EndpointFactory[IO]
-    val alive = ef.jsonGet("alive", IO.pure("I am alive!"))
     val foo = ef.jsonPost[Foo, Bar]("foo", foo => IO.pure(Bar(2)))
 
-    val endpoints = alive :: foo :: Nil
+    val endpoints = foo :: Nil
 
     /** config */
     val config = Config("localhost", 8090, 12)
 
     /** server */
-    val httpServer = Server(config, endpoints, None, None)
+    val httpServer = Server[IO](config, endpoints, None, None)
 
     httpServer.run

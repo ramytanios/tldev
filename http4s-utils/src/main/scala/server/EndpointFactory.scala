@@ -21,9 +21,9 @@ final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F] {
   ) =
     new Endpoint[F]:
       override def routes = (_: WebSocketBuilder2[F]) =>
-        HttpRoutes.of[F]:
-          case GET -> Root / path =>
-            handler.flatMap(Ok(_))
+        val r = HttpRoutes.of[F]:
+          case GET -> Root => handler.flatMap(Ok(_))
+        Router(path -> r)
       override def doc: Option[String] = description
       override def relPath: Option[String] = Some(path)
 
@@ -36,10 +36,11 @@ final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F] {
     object QueryParamMatcher extends QueryParamDecoderMatcher[String](queryParam)
     new Endpoint[F]:
       override def routes = (_: WebSocketBuilder2[F]) =>
-        HttpRoutes.of[F]:
+        val r = HttpRoutes.of[F]:
           case GET -> Root / path :? QueryParamMatcher(param) =>
             handler(param).flatMap:
               Ok(_)
+        Router(path -> r)
       override def doc: Option[String] = description
       override def relPath: Option[String] = Some(path)
 
@@ -50,13 +51,14 @@ final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F] {
   ) =
     new Endpoint[F]:
       override def routes = (_: WebSocketBuilder2[F]) =>
-        HttpRoutes.of[F]:
+        val r = HttpRoutes.of[F]:
           case request @ POST -> Root =>
             for
               req <- request.as[Request]
               resp <- handler(req)
               ok <- Ok(resp)
             yield ok
+        Router(path -> r)
       override def doc: Option[String] = description
       override def relPath: Option[String] = Some(path)
 

@@ -39,12 +39,17 @@ final class Server[F[_]: Async: Network](
 
   private def constructRoutes(wsb: WebSocketBuilder2[F]): HttpRoutes[F] =
     val routes = (endpoints ::: metaEndpoints).map(_.routes(wsb)).reduce(_ <+> _)
-    config.prefix.fold(routes)(prefix => Router(prefix -> routes))
+    config.prefix.fold(routes): prefix =>
+      Router(prefix -> routes)
 
   def run: F[Unit] =
     for
-      host <- Host.fromString(config.host).liftTo[F](HttpServerException("Invalid host"))
-      port <- Port.fromInt(config.port).liftTo[F](HttpServerException("Invalid port"))
+      host <- Host
+        .fromString(config.host)
+        .liftTo[F](HttpServerException(s"Invalid host ${config.host}"))
+      port <- Port
+        .fromInt(config.port)
+        .liftTo[F](HttpServerException(s"Invalid port ${config.port}"))
       // given Logger[F] <- LoggerFactory.create[F]
       _ <- EmberServerBuilder
         .default[F]
