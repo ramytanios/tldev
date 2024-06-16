@@ -3,6 +3,10 @@
 A set of utils for developing microservices using [http4s](https://http4s.org/), with
 [circe](https://circe.github.io/circe/) integration for `JSON` request/response interfaces.
 
+> [!IMPORTANT]  
+> The utilities provided are designed for use cases of mine. For more advanced features, 
+> use [http4s](https://http4s.org/) directly!
+
 1. **HTTP server**: set of basic endpoints factory methods and an HTTP server builder.
 Current factory methods exist for `GET`, `POST` and bidirectional websockets.
 
