@@ -5,7 +5,7 @@ A set of utils for developing microservices using [http4s](https://http4s.org/),
 avoiding boilerplate code on each project 🚀
 
 > [!IMPORTANT]  
-> The utilities provided are designed for use cases of mine. For more advanced features, 
+> The utilities provided are more or less designed for use cases of mine. For more advanced features, 
 > use [http4s](https://http4s.org/) directly!
 
 1. **HTTP server**: set of basic endpoints factory methods and an HTTP server builder.
@@ -63,8 +63,6 @@ object ClientMain extends IOApp.Simple:
         .flatMap: fx =>
           IO.consoleForIO.print(s"Received response ${fx.asJson.spaces2}")
 ```
-
-### TODO
 
 ### Examples 
 
