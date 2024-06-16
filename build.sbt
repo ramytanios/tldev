@@ -1,12 +1,27 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
+Global / resolvers += "Sonatype S01 OSS Snapshots".at(
+  "https://s01.oss.sonatype.org/content/repositories/snapshots"
+)
+
+ThisBuild / tlBaseVersion := "0.0"
 
 lazy val scala3 = "3.3.1"
-
 ThisBuild / scalaVersion := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
+ThisBuild / organization := "io.github.ramytanios"
+ThisBuild / organizationName := "ramytanios"
+ThisBuild / startYear := Some(2024)
+ThisBuild / tlSonatypeUseLegacyHost := false
+
+ThisBuild / developers := List(
+  tlGitHubDev("ramytanios", "Ramy Tanios")
+)
+ThisBuild / tlFatalWarnings := false
+
+// deps' versions
 lazy val V = new {
   val circe = "0.14.6"
   val cats = "2.12.0"
