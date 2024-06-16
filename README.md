@@ -3,7 +3,7 @@
 A set of utils for developing microservices using [http4s](https://http4s.org/), with
 [circe](https://circe.github.io/circe/) integration for `JSON` request/response interfaces.
 
-1. HTTP server: set of basic endpoints factory methods and an http server builder.
+1. **HTTP server**: set of basic endpoints factory methods and an HTTP server builder.
 Current factory methods exist for `GET`, `POST` and bidirectional websockets.
 
 ```scala
@@ -20,7 +20,7 @@ object Main extends IOApp.Simple:
     httpServer.run
 ```
 
-2. HTTP client: basic http client 
+2. **HTTP client**: basic http client 
 
 ### TODO
 
