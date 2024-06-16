@@ -40,8 +40,7 @@ lazy val V = new {
   val ciris = "3.6.0"
 }
 
-lazy val root =
-  (project in file(".")).aggregate(`http4s-utils`, examples)
+lazy val root = tlCrossRootProject.aggregate(`http4s-utils`, examples)
 
 lazy val `http4s-utils` = project
   .in(file("http4s-utils"))
