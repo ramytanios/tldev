@@ -24,41 +24,13 @@ lazy val V = new {
 }
 
 lazy val root =
-  (project in file(".")).aggregate(dtos.jvm, backend, frontend)
+  (project in file(".")).aggregate(`http4s-utils`, examples)
 
-lazy val dtos = crossProject(JSPlatform, JVMPlatform)
-  .in(file("dtos"))
-  .settings(
-    name := "implied-interest-rates-dtos",
-    scalacOptions -= "-Xfatal-warnings",
-    libraryDependencies ++=
-      Seq(
-        "io.circe" %% "circe-core" % V.circe,
-        "io.circe" %% "circe-generic" % V.circe,
-        "io.circe" %% "circe-literal" % V.circe,
-        "io.circe" %% "circe-parser" % V.circe
-      )
-  )
-
-lazy val frontend = project
-  .in(file("frontend"))
-  .enablePlugins(ScalaJSPlugin)
-  .settings(
-    name := "implied-interest-rates-frontend",
-    scalacOptions -= "-Xfatal-warnings",
-    libraryDependencies ++= Seq(
-      "io.github.cquiroz" %%% "scala-java-time" % V.scalaJavaTime,
-      "org.typelevel" %%% "mouse" % V.mouse,
-      "io.github.buntec" %%% "ff4s" % V.ff4s
-    )
-  )
-  .dependsOn(dtos.js)
-
-lazy val backend = project
+lazy val `http4s-utils` = project
   .in(file("backend"))
   .enablePlugins(JavaAppPackaging)
   .settings(
-    name := "implied-interest-rates-backend",
+    name := "http4s-utils",
     fork := true,
     libraryDependencies ++=
       Seq(
@@ -78,10 +50,16 @@ lazy val backend = project
         "org.http4s" %% "http4s-dsl" % V.http4s,
         "org.http4s" %% "http4s-circe" % V.http4s,
         "org.http4s" %% "http4s-ember-server" % V.http4s,
-        "org.http4s" %% "http4s-ember-client" % V.http4s,
-        "org.typelevel" %% "log4cats-core" % V.log4cats,
-        "org.typelevel" %% "log4cats-slf4j" % V.log4cats
+        "org.http4s" %% "http4s-ember-client" % V.http4s
       ),
     scalacOptions -= "-Xfatal-warnings"
   )
-  .dependsOn(dtos.jvm)
+
+lazy val examples = project
+  .in(file("examples"))
+  .settings(
+    name := "implied-interest-rates-backend",
+    fork := true,
+    scalacOptions -= "-Xfatal-warnings"
+  )
+  .dependsOn(`http4s-utils`)
