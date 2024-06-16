@@ -10,6 +10,9 @@ A set of utils for developing microservices using [http4s](https://http4s.org/),
 1. **HTTP server**: set of basic endpoints factory methods and an HTTP server builder.
 Current factory methods exist for `GET`, `POST` and bidirectional websockets.
 
+> [!NOTE]  
+> Three `alive`, `description` and `version` endpoints are always provided.
+
 ```scala
 import cats.effect.IO
 import cats.effect.IOApp
@@ -22,6 +25,11 @@ object Main extends IOApp.Simple:
     val config = Config("localhost", 8090, 12)
     val httpServer = Server(config, endpoints, None, None)
     httpServer.run
+```
+
+```shell
+curl localhost:8090/api/alive
+curl localhost:8090/api/helloworld
 ```
 
 2. **HTTP client**: basic http client 
