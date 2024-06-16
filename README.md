@@ -70,4 +70,5 @@ More examples can be ran:
 ```shell
 sbt examples/runMain ServerMain # HTTP server example 
 sbt examples/runMain ClientMain # HTTP client example 
+sbt examples/runMain WebsocketMain # Websocket example
 ```

@@ -18,16 +18,16 @@ object ServerMain extends IOApp.Simple:
 
   override def run: IO[Unit] =
 
-    /** endpoints */
+    // endpoints
     val ef = EndpointFactory[IO]
     val foo = ef.jsonPost[Foo, Bar]("foo", foo => IO.pure(Bar(2)))
 
     val endpoints = foo :: Nil
 
-    /** config */
+    // config
     val config = Config("localhost", 8090, 12)
 
-    /** server */
+    // server
     val httpServer = Server[IO](config, endpoints, None, None)
 
     httpServer.run

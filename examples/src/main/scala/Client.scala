@@ -18,7 +18,9 @@ object ClientMain extends IOApp.Simple:
     given Codec[FX] = deriveCodec[FX]
 
   override def run: IO[Unit] =
+
     val config = Config.default
+
     Client[IO](config).use: httpClient =>
       httpClient
         .get[FX]("https://api.frankfurter.app/latest?from=USD&to=CHF")
