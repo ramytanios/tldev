@@ -15,3 +15,6 @@ publish-local:
 
 javakill: 
   killall java -9
+
+prePr:
+  sbt tlPrePrBotHook
