@@ -27,7 +27,7 @@ lazy val root =
   (project in file(".")).aggregate(`http4s-utils`, examples)
 
 lazy val `http4s-utils` = project
-  .in(file("backend"))
+  .in(file("http4s-utils"))
   .enablePlugins(JavaAppPackaging)
   .settings(
     name := "http4s-utils",
@@ -58,7 +58,7 @@ lazy val `http4s-utils` = project
 lazy val examples = project
   .in(file("examples"))
   .settings(
-    name := "implied-interest-rates-backend",
+    name := "examples",
     fork := true,
     scalacOptions -= "-Xfatal-warnings"
   )
