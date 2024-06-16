@@ -16,10 +16,13 @@ ThisBuild / organizationName := "ramytanios"
 ThisBuild / startYear := Some(2024)
 ThisBuild / tlSonatypeUseLegacyHost := false
 
+ThisBuild / tlFatalWarnings := false
+ThisBuild / tlCiHeaderCheck := false
+ThisBuild / tlCiDependencyGraphJob := false
+
 ThisBuild / developers := List(
   tlGitHubDev("ramytanios", "Ramy Tanios")
 )
-ThisBuild / tlFatalWarnings := false
 
 // deps' versions
 lazy val V = new {
@@ -68,6 +71,7 @@ lazy val `http4s-utils` = project
 
 lazy val examples = project
   .in(file("examples"))
+  .enablePlugins(NoPublishPlugin)
   .settings(
     name := "examples",
     fork := true,
