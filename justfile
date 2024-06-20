@@ -18,3 +18,6 @@ javakill:
 
 prePr:
   sbt tlPrePrBotHook
+
+doc: 
+  sbt 'docs/mdoc'
