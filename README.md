@@ -59,7 +59,11 @@ object ClientMain extends IOApp.Simple:
     val config = Config.default
     Client[IO](config).use: httpClient =>
       httpClient
-        .get[FX]("https://api.frankfurter.app/latest?from=USD&to=CHF")
+        .get[FX](
+          baseUrl = "https://api.frankfurter.app",
+          path = Some("latest"),
+          Map("from" -> "USD", "to" -> "CHF")
+        )
         .flatMap: fx =>
           IO.consoleForIO.print(s"Received response ${fx.asJson.spaces2}")
 ```
