@@ -40,11 +40,10 @@ lazy val V = new {
   val ciris = "3.6.0"
 }
 
-lazy val root = tlCrossRootProject.aggregate(`http4s-utils`, examples)
+lazy val root = tlCrossRootProject.aggregate(`http4s-utils`, docs, examples)
 
 lazy val `http4s-utils` = project
   .in(file("http4s-utils"))
-  .enablePlugins(JavaAppPackaging)
   .settings(
     name := "http4s-utils",
     fork := true,
@@ -64,16 +63,20 @@ lazy val `http4s-utils` = project
         "org.http4s" %% "http4s-circe" % V.http4s,
         "org.http4s" %% "http4s-ember-server" % V.http4s,
         "org.http4s" %% "http4s-ember-client" % V.http4s
-      ),
-    scalacOptions -= "-Xfatal-warnings"
+      )
   )
+
+lazy val docs = project
+  .in(file("http4s-utils-doc"))
+  .enablePlugins(MdocPlugin, NoPublishPlugin)
+  .settings(mdocOut := file("."), mdocVariables := Map("VERSION" -> version.value))
+  .dependsOn(`http4s-utils`)
 
 lazy val examples = project
   .in(file("examples"))
   .enablePlugins(NoPublishPlugin)
   .settings(
     name := "examples",
-    fork := true,
-    scalacOptions -= "-Xfatal-warnings"
+    fork := true
   )
   .dependsOn(`http4s-utils`)
