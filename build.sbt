@@ -67,7 +67,7 @@ lazy val `http4s-utils` = project
   )
 
 lazy val docs = project
-  .in(file("http4s-utils-doc"))
+  .in(file("docs"))
   .enablePlugins(MdocPlugin, NoPublishPlugin)
   .settings(mdocOut := file("."), mdocVariables := Map("VERSION" -> version.value))
   .dependsOn(`http4s-utils`)
