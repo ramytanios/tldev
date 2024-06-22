@@ -19,6 +19,8 @@ ThisBuild / tlSonatypeUseLegacyHost := false
 ThisBuild / tlFatalWarnings := false
 ThisBuild / tlCiHeaderCheck := false
 ThisBuild / tlCiDependencyGraphJob := false
+ThisBuild / tlCiScalafmtCheck := true
+ThisBuild / tlCiScalafixCheck := true
 
 ThisBuild / developers := List(
   tlGitHubDev("ramytanios", "Ramy Tanios")
