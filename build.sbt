@@ -95,7 +95,11 @@ lazy val core = project
 lazy val docs = project
   .in(file("docs"))
   .enablePlugins(MdocPlugin, NoPublishPlugin)
-  .settings(mdocOut := file("."), mdocVariables := Map("VERSION" -> version.value))
+  .settings(
+    mdocIn := file("docs"),
+    mdocOut := file("."),
+    mdocVariables := Map("VERSION" -> version.value)
+  )
   .dependsOn(http, core)
 
 lazy val examples = project

@@ -1,12 +1,10 @@
 ## tldev
 
-A set of utils for developing microservices using [http4s](https://http4s.org/), with
-[circe](https://circe.github.io/circe/) integration for `JSON` request/response interfaces,
-avoiding boilerplate code on each project 🚀
+A set of utils for developing microservices using the [typelevel](https://typelevel.org/) stack.
 
 > [!IMPORTANT]  
 > The utilities provided are more or less designed for use cases of mine. For more advanced features, 
-> use [http4s](https://http4s.org/) directly!
+> use the relevant libraries directly!
 
 1. **HTTP server**: set of basic endpoints factory methods and an HTTP server builder.
 Current factory methods exist for `GET`, `POST` and bidirectional websockets.
@@ -17,14 +15,16 @@ Current factory methods exist for `GET`, `POST` and bidirectional websockets.
 ```scala
 import cats.effect.IO
 import cats.effect.IOApp
-import http4sutils.server.*
+import tldev.http.server.*
+import tldev.http.server
+import tldev.core.implicits.given_LoggerFactory_F
 
 object Main extends IOApp.Simple:
   override def run: IO[Unit] =
     val ef = EndpointFactory[IO]
     val helloworld = ef.jsonGet[String]("helloworld", IO.pure("Hello world!"))
-    val config = Config("localhost", 8090, 12)
-    val httpServer = Server(config, endpoints, None, None)
+    val config = server.Config("localhost", 8090, 12)
+    val httpServer = Server(config, helloworld :: Nil, None, None)
     httpServer.run
 ```
 
@@ -35,10 +35,11 @@ curl localhost:8090/api/helloworld
 
 2. **HTTP client**: basic http client 
 
-```scala 
+```scala
 import cats.effect.IO
 import cats.effect.IOApp
-import http4sutils.client.*
+import tldev.http.client.*
+import tldev.http.client
 import java.time.LocalDate
 import io.circe.*
 import io.circe.syntax.*
@@ -56,7 +57,7 @@ object ClientMain extends IOApp.Simple:
     given Codec[FX] = deriveCodec[FX]
 
   override def run: IO[Unit] =
-    val config = Config.default
+    val config = client.Config.default
     Client[IO](config).use: httpClient =>
       httpClient
         .get[FX](
