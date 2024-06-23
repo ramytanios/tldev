@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package http4sutils.server
+package tldev.http.client
 
-case class Config(
-    host: String,
-    port: Int,
-    maxConnections: Int,
-    prefix: Option[String] = Some("api")
-)
+import scala.concurrent.duration.*
+
+case class Config(timeout: FiniteDuration)
 
 object Config:
-  def local: Config = Config("localhost", 8090, 32)
+  def default: Config = Config(timeout = 5.minutes)

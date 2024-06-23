@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package http4sutils.client
+package tldev.http.client
 
+import cats.effect.kernel.Async
+import cats.effect.kernel.Resource
+import cats.syntax.all.*
+import fs2.io.net.Network
 import io.circe.Decoder
 import io.circe.Encoder
-import cats.effect.kernel.Async
-import org.http4s.ember.client.EmberClientBuilder
-import cats.effect.kernel.Resource
-import org.http4s.Uri
-import cats.syntax.all.*
-import org.http4s.circe.CirceEntityCodec.*
-import fs2.io.net.Network
+import io.circe.syntax.*
 import org.http4s.Method
 import org.http4s.Request
-import io.circe.syntax.*
+import org.http4s.Uri
+import org.http4s.circe.CirceEntityCodec.*
+import org.http4s.ember.client.EmberClientBuilder
 
 sealed trait Client[F[_]]:
 

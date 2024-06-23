@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package http4sutils.server
+package tldev.http.server
 
+import cats.data.Kleisli
 import cats.effect.kernel.Async
 import cats.implicits.*
 import com.comcast.ip4s.Host
@@ -25,10 +26,13 @@ import org.http4s.HttpRoutes
 import org.http4s.Response
 import org.http4s.dsl.Http4sDsl
 import org.http4s.ember.server.EmberServerBuilder
-import org.http4s.server.websocket.WebSocketBuilder2
 import org.http4s.server.Router
+import org.http4s.server.websocket.WebSocketBuilder2
+import org.typelevel.log4cats.Logger
+import org.typelevel.log4cats.LoggerFactory
+import org.typelevel.log4cats.syntax.*
 
-final class Server[F[_]: Async: Network](
+final class Server[F[_]: Async: Network: LoggerFactory](
     config: Config,
     endpoints: List[Endpoint[F]],
     description: Option[String],
@@ -60,13 +64,13 @@ final class Server[F[_]: Async: Network](
 
   def run: F[Unit] =
     for
+      given Logger[F] <- LoggerFactory[F].create
       host <- Host
         .fromString(config.host)
         .liftTo[F](HttpServerException(s"Invalid host ${config.host}"))
       port <- Port
         .fromInt(config.port)
         .liftTo[F](HttpServerException(s"Invalid port ${config.port}"))
-      // given Logger[F] <- LoggerFactory.create[F]
       _ <- EmberServerBuilder
         .default[F]
         .withHost(host)
@@ -74,7 +78,7 @@ final class Server[F[_]: Async: Network](
         .withHttpWebSocketApp(wsb => constructRoutes(wsb).orNotFound)
         .withMaxConnections(config.maxConnections)
         .build
-        // .evalTap(_ => info"Server listening on port $port")
+        .evalTap(_ => info"Server listening on port $port")
         .use(_ => Async[F].never)
     yield ()
 

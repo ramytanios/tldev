@@ -40,17 +40,22 @@ lazy val V = new {
   val ff4s = "0.24.0"
   val http4s = "0.23.27"
   val ciris = "3.6.0"
+  val log4cats = "2.7.0"
+  val logback = "1.2.10"
 }
 
-lazy val root = tlCrossRootProject.aggregate(`http4s-utils`, docs, examples)
+lazy val root = tlCrossRootProject.aggregate(http, core, docs, examples)
 
-lazy val `http4s-utils` = project
-  .in(file("http4s-utils"))
+lazy val http = project
+  .in(file("http"))
   .settings(
-    name := "http4s-utils",
+    name := "http",
     fork := true,
     libraryDependencies ++=
       Seq(
+        "org.typelevel" %% "log4cats-slf4j" % V.log4cats,
+        "ch.qos.logback" % "logback-classic" % V.logback,
+        "ch.qos.logback" % "logback-core" % V.logback,
         "io.circe" %% "circe-core" % V.circe,
         "io.circe" %% "circe-generic" % V.circe,
         "io.circe" %% "circe-literal" % V.circe,
@@ -67,12 +72,31 @@ lazy val `http4s-utils` = project
         "org.http4s" %% "http4s-ember-client" % V.http4s
       )
   )
+  .dependsOn(core)
+
+lazy val core = project
+  .in(file("core"))
+  .settings(
+    name := "core",
+    fork := true,
+    libraryDependencies ++=
+      Seq(
+        "org.typelevel" %% "log4cats-slf4j" % V.log4cats,
+        "ch.qos.logback" % "logback-classic" % V.logback,
+        "ch.qos.logback" % "logback-core" % V.logback,
+        "org.typelevel" %% "cats-core" % V.cats,
+        "org.typelevel" %% "cats-effect" % V.catsEffect,
+        "org.typelevel" %% "cats-effect-std" % V.catsEffect,
+        "co.fs2" %% "fs2-core" % V.fs2,
+        "co.fs2" %% "fs2-io" % V.fs2
+      )
+  )
 
 lazy val docs = project
   .in(file("docs"))
   .enablePlugins(MdocPlugin, NoPublishPlugin)
   .settings(mdocOut := file("."), mdocVariables := Map("VERSION" -> version.value))
-  .dependsOn(`http4s-utils`)
+  .dependsOn(http, core)
 
 lazy val examples = project
   .in(file("examples"))
@@ -81,4 +105,4 @@ lazy val examples = project
     name := "examples",
     fork := true
   )
-  .dependsOn(`http4s-utils`)
+  .dependsOn(http, core)

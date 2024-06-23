@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package http4sutils.server
+package tldev.http.server
 
 import cats.effect.Concurrent
 import cats.syntax.all.*

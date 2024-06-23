@@ -16,11 +16,12 @@
 
 import cats.effect.IO
 import cats.effect.IOApp
-import http4sutils.client.*
-import java.time.LocalDate
 import io.circe.*
-import io.circe.syntax.*
 import io.circe.generic.semiauto.*
+import io.circe.syntax.*
+import tldev.http.client.*
+
+import java.time.LocalDate
 
 object ClientMain extends IOApp.Simple:
 

@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package http4sutils.server
+package tldev.core
 
-import org.http4s.HttpRoutes
-import org.http4s.server.websocket.WebSocketBuilder2
+import cats.effect.kernel.Sync
+import org.typelevel.log4cats.LoggerFactory
+import org.typelevel.log4cats.slf4j.Slf4jFactory
 
-trait Endpoint[F[_]]:
-  /** http4s routes */
-  def routes: WebSocketBuilder2[F] => HttpRoutes[F]
+object implicits:
 
-  /** description of the endpoint */
-  def doc: Option[String]
-
-  /** relative path of the endpoint */
-  def relPath: Option[String]
+  given [F[_]: Sync]: LoggerFactory[F] = Slf4jFactory.create[F]

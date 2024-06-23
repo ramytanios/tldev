@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-package http4sutils.client
+package tldev.http.server
 
-import scala.concurrent.duration.*
+import org.http4s.HttpRoutes
+import org.http4s.server.websocket.WebSocketBuilder2
 
-case class Config(timeout: FiniteDuration)
+trait Endpoint[F[_]]:
+  /** http4s routes */
+  def routes: WebSocketBuilder2[F] => HttpRoutes[F]
 
-object Config:
-  def default: Config = Config(timeout = 5.minutes)
+  /** description of the endpoint */
+  def doc: Option[String]
+
+  /** relative path of the endpoint */
+  def relPath: Option[String]
