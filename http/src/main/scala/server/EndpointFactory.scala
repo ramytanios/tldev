@@ -34,7 +34,7 @@ final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F] {
       path: String,
       handler: F[Response],
       description: Option[String] = None
-  ) =
+  ): Endpoint[F] =
     new Endpoint[F]:
       override def routes = (_: WebSocketBuilder2[F]) =>
         val r = HttpRoutes.of[F]:
@@ -48,7 +48,7 @@ final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F] {
       queryParam: String,
       handler: String => F[Response],
       description: Option[String] = None
-  ) =
+  ): Endpoint[F] =
     object QueryParamMatcher extends QueryParamDecoderMatcher[String](queryParam)
     new Endpoint[F]:
       override def routes = (_: WebSocketBuilder2[F]) =>
@@ -64,7 +64,7 @@ final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F] {
       path: String,
       handler: Request => F[Response],
       description: Option[String] = None
-  ) =
+  ): Endpoint[F] =
     new Endpoint[F]:
       override def routes = (_: WebSocketBuilder2[F]) =>
         val r = HttpRoutes.of[F]:

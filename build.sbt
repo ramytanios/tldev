@@ -31,9 +31,9 @@ lazy val V = new {
   val circe = "0.14.6"
   val cats = "2.12.0"
   val fs2 = "3.10.2"
+  val fs2data = "1.11.0"
   val catsEffect = "3.5.4"
   val kittens = "3.2.0"
-  val literally = "1.1.0"
   val mouse = "1.3.0"
   val catsTime = "0.5.1"
   val scalaJavaTime = "2.5.0"
@@ -42,6 +42,7 @@ lazy val V = new {
   val ciris = "3.6.0"
   val log4cats = "2.7.0"
   val logback = "1.2.10"
+  val literally = "1.2.0"
 }
 
 lazy val root = tlCrossRootProject.aggregate(http, core, docs, examples)
@@ -88,7 +89,9 @@ lazy val core = project
         "org.typelevel" %% "cats-effect" % V.catsEffect,
         "org.typelevel" %% "cats-effect-std" % V.catsEffect,
         "co.fs2" %% "fs2-core" % V.fs2,
-        "co.fs2" %% "fs2-io" % V.fs2
+        "co.fs2" %% "fs2-io" % V.fs2,
+        "org.gnieh" %% "fs2-data-csv" % V.fs2data,
+        "org.typelevel" %% "literally" % V.literally
       )
   )
 
