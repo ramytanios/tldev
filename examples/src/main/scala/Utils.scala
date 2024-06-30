@@ -56,7 +56,7 @@ object UtilsMain extends IOApp.Simple:
         .emits(EmployeeRecord.random.listOfN(100).runA(Rand.init))
         .spaced[IO](1.second)
         .evalTap(e => Logger[IO].info(e.show))
-        .through(csv.pipes.toCsv("dumps", "data", createPath = true))
+        .through(csv.pipes.saveTo("dumps", "data", createPath = true))
         .compile
         .drain
     yield ()

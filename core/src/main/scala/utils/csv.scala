@@ -14,7 +14,7 @@ object csv:
 
   object pipes:
 
-    def toCsv[F[_]: Async: Temporal: Logger: Files, V: CsvRowEncoder[*, String]](
+    def saveTo[F[_]: Async: Temporal: Logger: Files, V: CsvRowEncoder[*, String]](
         path: String,
         filename: String,
         createPath: Boolean = false
