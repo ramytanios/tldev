@@ -25,8 +25,7 @@ object UtilsMain extends IOApp.Simple:
   object EmployeeRecord:
 
     enum Level:
-      case Junior
-      case Senior
+      case Junior, Senior
 
     given Show[EmployeeRecord] = Show: elem =>
       s"uuid: ${elem.uuid}, start: ${elem.startDate}, level: ${elem.level}"
@@ -50,8 +49,6 @@ object UtilsMain extends IOApp.Simple:
   override def run: IO[Unit] =
     for
       given Logger[IO] <- LoggerFactory[IO].create
-      _ <- Logger[IO].info("starting ...")
-      _ <- Logger[IO].info(EmployeeRecord.random.runA(Rand.init).show)
       _ <- fs2.Stream
         .emits(EmployeeRecord.random.listOfN(100).runA(Rand.init))
         .spaced[IO](1.second)
