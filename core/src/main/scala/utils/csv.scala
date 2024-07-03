@@ -2,14 +2,14 @@ package tldev.core.utils
 
 import cats.effect.kernel.Async
 import cats.effect.kernel.Temporal
+import cats.syntax.all.*
+import fs2.compression.Compression
 import fs2.data.csv.CsvRowEncoder
 import fs2.data.csv.encodeUsingFirstHeaders
 import fs2.io.file.Files
 import fs2.io.file.Path
 import org.typelevel.log4cats.Logger
 import tldev.core.utils.streaming.logProgress
-import cats.syntax.all.*
-import fs2.compression.Compression
 
 object csv:
 

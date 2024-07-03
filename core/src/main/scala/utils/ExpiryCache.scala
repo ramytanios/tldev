@@ -9,7 +9,7 @@
 // import cats.effect.implicits.*
 // import cats.effect.std.Mutex
 //
-// trait ExpiryCache[F[_], K, V]:
+// sealed trait ExpiryCache[F[_], K, V]:
 //
 //   def addOrUpdate(key: K, value: V, expiresIn: FiniteDuration): F[Unit]
 //

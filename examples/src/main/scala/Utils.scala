@@ -1,3 +1,4 @@
+import cats.Show
 import cats.data.NonEmptyList
 import cats.effect.IO
 import cats.effect.IOApp
@@ -12,7 +13,6 @@ import tldev.core.utils.literals.*
 
 import java.util.UUID
 import scala.concurrent.duration.*
-import cats.Show
 
 object UtilsMain extends IOApp.Simple:
 
