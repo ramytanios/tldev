@@ -3,6 +3,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val scala3 = "3.3.1"
 
 ThisBuild / scalaVersion       := scala3
+ThisBuild / organization       := "io.github.ramytanios"
 ThisBuild / crossScalaVersions := Seq(scala3)
 ThisBuild / semanticdbEnabled  := true
 ThisBuild / semanticdbVersion  := scalafixSemanticdb.revision
@@ -29,10 +30,6 @@ lazy val V = new {
 }
 
 lazy val root = project.in(file(".")).aggregate(http, core.jvm, core.js).settings(
-    organization := "io.github.ramytanios",
-    name := "tldev",
-    version := "1.0.0",
-    scalaVersion := scala3, 
     publishArtifact := false // Avoid accidental publishing
 )
 
