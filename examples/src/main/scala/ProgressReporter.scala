@@ -1,7 +1,7 @@
 import cats.effect.IO
 import cats.effect.IOApp
 import scala.concurrent.duration.*
-import tldev.core.utils.ProgressReporter
+import tldev.core.ProgressReporter
 
 object ProgressReporterMain extends IOApp.Simple:
 

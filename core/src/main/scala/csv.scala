@@ -1,4 +1,4 @@
-package tldev.core.utils
+package tldev.core
 
 import cats.effect.kernel.Async
 import cats.effect.kernel.Temporal
@@ -9,7 +9,6 @@ import fs2.data.csv.encodeUsingFirstHeaders
 import fs2.io.file.Files
 import fs2.io.file.Path
 import org.typelevel.log4cats.Logger
-import tldev.core.utils.streaming.logProgress
 
 object csv:
 

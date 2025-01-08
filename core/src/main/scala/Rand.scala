@@ -1,4 +1,4 @@
-package tldev.core.utils
+package tldev.core
 
 import cats.Monad
 import cats.data.State

@@ -1,4 +1,4 @@
-package tldev.core.utils
+package tldev.core
 
 import cats.syntax.all.*
 import org.typelevel.literally.Literally

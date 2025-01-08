@@ -7,9 +7,9 @@ import fs2.data.csv.CsvRowEncoder
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.LoggerFactory
 import tldev.core.implicits.given_LoggerFactory_F
-import tldev.core.utils.Rand
-import tldev.core.utils.csv
-import tldev.core.utils.literals.*
+import tldev.core.Rand
+import tldev.core.csv
+import tldev.core.literals.*
 
 import java.util.UUID
 import scala.concurrent.duration.*

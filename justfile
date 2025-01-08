@@ -1,23 +1,33 @@
-fmt: 
-  sbt scalafmtAll
-
-fix: 
-  sbt 'scalafixEnable; scalafixAll; scalafmtAll'
-
-clean:
-  git clean -Xdf
-
-check-deps:
-  sbt dependencyUpdates
+@default:
+    just --list
 
 publish-local:
   sbt 'publishLocal'
 
-javakill: 
-  killall java -9
-
-prePr:
+prepr:
   sbt tlPrePrBotHook
 
 doc: 
   sbt 'docs/mdoc'
+
+fmt:
+    just --fmt --unstable
+
+scalafmt:
+    sbt scalafmtAll
+
+scalafix:
+    sbt 'scalafixEnable; scalafixAll'
+
+fix:
+    just scalafmt scalafix
+
+[confirm]
+clean:
+    git clean -Xdf
+
+deps:
+    sbt dependencyUpdates
+
+examples:
+  sbt 'examples/run'

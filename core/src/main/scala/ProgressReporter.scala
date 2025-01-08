@@ -1,4 +1,4 @@
-package tldev.core.utils
+package tldev.core
 
 import cats.effect.Temporal
 import cats.effect.implicits.*
