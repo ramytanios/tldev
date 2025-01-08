@@ -44,7 +44,7 @@ lazy val V = new {
   val literally     = "1.2.0"
 }
 
-lazy val root = tlCrossRootProject.aggregate(http, core, docs, examples)
+lazy val root = tlCrossRootProject.aggregate(http, core.jvm, core.js, docs, examples)
 
 lazy val http = project
   .in(file("http"))
@@ -72,9 +72,9 @@ lazy val http = project
         "org.http4s"    %% "http4s-ember-client" % V.http4s
       )
   )
-  .dependsOn(core)
+  .dependsOn(core.jvm)
 
-lazy val core = project
+lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(
     name := "core",
@@ -102,7 +102,7 @@ lazy val docs = project
     mdocOut       := file("."),
     mdocVariables := Map("VERSION" -> version.value)
   )
-  .dependsOn(http, core)
+  .dependsOn(http, core.jvm)
 
 lazy val examples = project
   .in(file("examples"))
@@ -111,4 +111,4 @@ lazy val examples = project
     name := "examples",
     fork := true
   )
-  .dependsOn(http, core)
+  .dependsOn(http, core.jvm)
