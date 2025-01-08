@@ -29,12 +29,12 @@ lazy val V = new {
   val literally     = "1.2.0"
 }
 
-lazy val root = project.in(file(".")).aggregate(http, core.jvm, core.js).settings(
+lazy val root = project.in(file(".")).aggregate(tldev-http, tldev-core.jvm, tldev-core.js).settings(
     publishArtifact := false // Avoid accidental publishing
 )
 
-lazy val http = project
-  .in(file("tldev-http"))
+lazy val tldev-http = project
+  .in(file("http"))
   .settings(
     name := "http",
     fork := true,
@@ -61,8 +61,8 @@ lazy val http = project
   )
   .dependsOn(core.jvm)
 
-lazy val core = crossProject(JSPlatform, JVMPlatform)
-  .in(file("tldev-core"))
+lazy val tldev-core = crossProject(JSPlatform, JVMPlatform)
+  .in(file("core"))
   .settings(
     name := "core",
     fork := true,
