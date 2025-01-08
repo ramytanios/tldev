@@ -4,9 +4,6 @@
 publish-local:
   sbt 'publishLocal'
 
-prepr:
-  sbt tlPrePrBotHook
-
 doc: 
   sbt 'docs/mdoc'
 
