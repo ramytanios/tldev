@@ -34,7 +34,7 @@ lazy val root = project.in(file(".")).aggregate(http, core.jvm, core.js).setting
 )
 
 lazy val http = project
-  .in(file("http"))
+  .in(file("tldev-http"))
   .settings(
     name := "http",
     fork := true,
@@ -62,7 +62,7 @@ lazy val http = project
   .dependsOn(core.jvm)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
-  .in(file("core"))
+  .in(file("tldev-core"))
   .settings(
     name := "core",
     fork := true,
