@@ -1,29 +1,13 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
-Global / resolvers += "Sonatype S01 OSS Snapshots".at(
-  "https://s01.oss.sonatype.org/content/repositories/snapshots"
-)
-
-ThisBuild / tlBaseVersion := "0.0"
 
 lazy val scala3 = "3.3.1"
+
 ThisBuild / scalaVersion       := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
 ThisBuild / semanticdbEnabled  := true
 ThisBuild / semanticdbVersion  := scalafixSemanticdb.revision
-
-ThisBuild / organization            := "io.github.ramytanios"
-ThisBuild / organizationName        := "ramytanios"
-ThisBuild / startYear               := Some(2024)
-ThisBuild / tlSonatypeUseLegacyHost := false
-
-ThisBuild / tlFatalWarnings        := false
-ThisBuild / tlCiHeaderCheck        := false
-ThisBuild / tlCiDependencyGraphJob := false
-ThisBuild / tlCiScalafmtCheck      := true
-ThisBuild / tlCiScalafixCheck      := true
-
-ThisBuild / developers := List(
-  tlGitHubDev("ramytanios", "Ramy Tanios")
+Global / resolvers += "Sonatype S01 OSS Snapshots".at(
+  "https://s01.oss.sonatype.org/content/repositories/snapshots"
 )
 
 lazy val V = new {
@@ -44,7 +28,13 @@ lazy val V = new {
   val literally     = "1.2.0"
 }
 
-lazy val root = tlCrossRootProject.aggregate(http, core.jvm, core.js, docs, examples)
+lazy val root = project.in(file(".")).aggregate(http, core.jvm, core.js).settings(
+    organization := "io.github.ramytanios",
+    name := "tldev",
+    version := "1.0.0",
+    scalaVersion := scala3, 
+    publishArtifact := false // Avoid accidental publishing
+)
 
 lazy val http = project
   .in(file("http"))
@@ -94,21 +84,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
       )
   )
 
-lazy val docs = project
-  .in(file("docs"))
-  .enablePlugins(MdocPlugin, NoPublishPlugin)
-  .settings(
-    mdocIn        := file("docs"),
-    mdocOut       := file("."),
-    mdocVariables := Map("VERSION" -> version.value)
-  )
-  .dependsOn(http, core.jvm)
-
 lazy val examples = project
   .in(file("examples"))
-  .enablePlugins(NoPublishPlugin)
-  .settings(
-    name := "examples",
-    fork := true
-  )
+  .settings(name := "examples", fork := true, publishArtifact := false)
   .dependsOn(http, core.jvm)
