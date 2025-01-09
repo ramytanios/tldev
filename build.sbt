@@ -15,7 +15,7 @@ ThisBuild / credentials += Credentials(
   "GitHub Package Registry",
   "maven.pkg.github.com",
   "ramytanios",
-  "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"
+  sys.env.getOrElse("GH_TOKEN", "")
 )
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision

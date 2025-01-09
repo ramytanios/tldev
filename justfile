@@ -28,3 +28,6 @@ deps:
 
 examples:
     sbt 'examples/run'
+
+gen-workflow:
+  sbt githubWorkflowGenerate
