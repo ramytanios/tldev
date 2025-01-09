@@ -4,10 +4,10 @@ import cats.effect.kernel.Temporal
 import cats.syntax.all.*
 import org.typelevel.log4cats.Logger
 
-import scala.concurrent.duration.* 
+import scala.concurrent.duration.*
 
-package object core: 
-  
+package object core:
+
   def logProgress[F[_]: Temporal: Logger, V](
       label: String,
       totalElements: Option[Long] = None,
