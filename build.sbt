@@ -42,7 +42,7 @@ lazy val V = new {
 }
 
 lazy val root = project.in(file("."))
-  .aggregate(http, core.jvm, core.js)
+  .aggregate(http, examples,core.jvm, core.js)
   .settings(publish / skip := true, git.useGitDescribe := true)
   .enablePlugins(GitVersioning)
 
