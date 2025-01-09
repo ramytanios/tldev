@@ -4,6 +4,7 @@ import cats.effect.Concurrent
 import cats.effect.Temporal
 import cats.syntax.all.*
 import io.circe.*
+import io.circe.parser.*
 import io.circe.syntax.*
 import org.http4s.*
 import org.http4s.circe.CirceEntityCodec.*
@@ -12,10 +13,9 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
 import org.http4s.server.websocket.WebSocketBuilder2
 import org.http4s.websocket.WebSocketFrame
-import scala.concurrent.duration.*
-import io.circe.parser.*
-import org.http4s.websocket.WebSocketFrame
 import org.http4s.websocket.WebSocketFrame.Ping
+
+import scala.concurrent.duration.*
 
 final class EndpointFactory[F[_]: Concurrent: Temporal]() extends Http4sDsl[F]:
 
