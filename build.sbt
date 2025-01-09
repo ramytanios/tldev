@@ -52,7 +52,6 @@ lazy val http = project
   .settings(
     name               := "tldev-http",
     git.useGitDescribe := true,
-    fork               := true,
     libraryDependencies ++=
       Seq(
         "org.typelevel" %% "log4cats-slf4j"      % V.log4cats,
@@ -81,7 +80,6 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .enablePlugins(GitVersioning)
   .settings(
     name               := "tldev-core",
-    fork               := true,
     git.useGitDescribe := true,
     libraryDependencies ++=
       Seq(
@@ -100,5 +98,5 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 
 lazy val examples = project
   .in(file("examples"))
-  .settings(name := "examples", fork := true, publishArtifact := false)
+  .settings(name := "examples", publishArtifact := false)
   .dependsOn(http, core.jvm)
