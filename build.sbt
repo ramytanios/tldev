@@ -5,6 +5,7 @@ lazy val scala3 = "3.3.1"
 ThisBuild / scalaVersion       := scala3
 ThisBuild / version            := "0.0.1-SNAPSHOT" // TODO: update dynamically based on git tags
 ThisBuild / organization       := "io.github.ramytanios"
+ThisBuild / organizationName   := "ramytanios"
 ThisBuild / crossScalaVersions := Seq(scala3)
 ThisBuild / semanticdbEnabled  := true
 ThisBuild / semanticdbVersion  := scalafixSemanticdb.revision
