@@ -1,4 +1,4 @@
-ThisBuild / version := "0.0.1-SNAPSHOT" // TODO: update dynamically based on git tags
+// ThisBuild / version := "0.0.1-SNAPSHOT" // TODO: update dynamically based on git tags
 
 lazy val scala3 = "3.3.1"
 ThisBuild / scalaVersion       := scala3
@@ -30,12 +30,14 @@ lazy val V = new {
   val literally     = "1.2.0"
 }
 
-lazy val root = project.in(file(".")).aggregate(http, core.jvm, core.js).settings(
-  publishArtifact := false // Avoid accidental publishing
-)
+lazy val root = project.in(file("."))
+  .aggregate(http, core.jvm, core.js)
+  .settings(publishArtifact := false )
+  .enablePlugins(GitVersioning)
 
 lazy val http = project
   .in(file("http"))
+  .enablePlugins(GitVersioning)
   .settings(
     name := "tldev-http",
     fork := true,
@@ -64,6 +66,7 @@ lazy val http = project
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
+  .enablePlugins(GitVersioning)
   .settings(
     name := "tldev-core",
     fork := true,
