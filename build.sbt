@@ -1,3 +1,5 @@
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 lazy val scala3 = "3.3.1"
 ThisBuild / scalaVersion       := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
@@ -10,8 +12,6 @@ ThisBuild / organizationName := "ramytanios"
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
-
-Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val V = new {
   val circe         = "0.14.6"
