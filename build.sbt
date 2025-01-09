@@ -1,8 +1,9 @@
-// ThisBuild / version := "0.0.1-SNAPSHOT" // TODO: update dynamically based on git tags
-
 lazy val scala3 = "3.3.1"
 ThisBuild / scalaVersion       := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
+
+// handled by sbt-git plugin
+// ThisBuild / version := "0.0.1-SNAPSHOT" 
 
 ThisBuild / organization     := "io.github.ramytanios"
 ThisBuild / organizationName := "ramytanios"
@@ -32,7 +33,7 @@ lazy val V = new {
 
 lazy val root = project.in(file("."))
   .aggregate(http, core.jvm, core.js)
-  .settings(publishArtifact := false )
+  .settings(publish / skip := true)
   .enablePlugins(GitVersioning)
 
 lazy val http = project
