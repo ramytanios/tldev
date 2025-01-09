@@ -19,6 +19,7 @@ ThisBuild / credentials += Credentials(
 )
 
 ThisBuild / githubWorkflowEnv := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
+ThisBuild / githubWorkflowPublishCond := Some("contains(github.event.head_commit.message, '[publish]')")
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
