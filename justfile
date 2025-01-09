@@ -31,3 +31,6 @@ examples:
 
 gen-workflow:
   sbt githubWorkflowGenerate
+
+check-workflow:
+  sbt githubWorkflowCheck

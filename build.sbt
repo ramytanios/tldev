@@ -17,6 +17,9 @@ ThisBuild / credentials += Credentials(
   "ramytanios",
   sys.env.getOrElse("GH_TOKEN", "")
 )
+
+ThisBuild / githubWorkflowEnv := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
+
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
