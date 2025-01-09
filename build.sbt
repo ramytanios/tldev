@@ -1,17 +1,16 @@
-Global / onChangedBuildSource := ReloadOnSourceChanges
+ThisBuild / version := "0.0.1-SNAPSHOT" // TODO: update dynamically based on git tags
 
 lazy val scala3 = "3.3.1"
-
 ThisBuild / scalaVersion       := scala3
-ThisBuild / version            := "0.0.1-SNAPSHOT" // TODO: update dynamically based on git tags
-ThisBuild / organization       := "io.github.ramytanios"
-ThisBuild / organizationName   := "ramytanios"
 ThisBuild / crossScalaVersions := Seq(scala3)
-ThisBuild / semanticdbEnabled  := true
-ThisBuild / semanticdbVersion  := scalafixSemanticdb.revision
-Global / resolvers += "Sonatype S01 OSS Snapshots".at(
-  "https://s01.oss.sonatype.org/content/repositories/snapshots"
-)
+
+ThisBuild / organization     := "io.github.ramytanios"
+ThisBuild / organizationName := "ramytanios"
+
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
+
+Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val V = new {
   val circe         = "0.14.6"
