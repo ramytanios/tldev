@@ -2,10 +2,10 @@
     just --list
 
 publish-local:
-  sbt 'publishLocal'
+    sbt 'publishLocal'
 
-doc: 
-  sbt 'docs/mdoc'
+doc:
+    sbt 'docs/mdoc'
 
 fmt:
     just --fmt --unstable
@@ -27,4 +27,4 @@ deps:
     sbt dependencyUpdates
 
 examples:
-  sbt 'examples/run'
+    sbt 'examples/run'
