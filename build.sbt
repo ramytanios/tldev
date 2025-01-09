@@ -3,6 +3,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val scala3 = "3.3.1"
 
 ThisBuild / scalaVersion       := scala3
+ThisBuild / version            := "0.0.1-SNAPSHOT" // TODO: update dynamically based on git tags
 ThisBuild / organization       := "io.github.ramytanios"
 ThisBuild / crossScalaVersions := Seq(scala3)
 ThisBuild / semanticdbEnabled  := true
@@ -30,7 +31,7 @@ lazy val V = new {
 }
 
 lazy val root = project.in(file(".")).aggregate(http, core.jvm, core.js).settings(
-    publishArtifact := false // Avoid accidental publishing
+  publishArtifact := false // Avoid accidental publishing
 )
 
 lazy val http = project
