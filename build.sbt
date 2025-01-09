@@ -3,7 +3,7 @@ ThisBuild / scalaVersion       := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
 
 // handled by sbt-git plugin
-// ThisBuild / version := "0.0.1-SNAPSHOT" 
+// ThisBuild / version := "0.0.1-SNAPSHOT"
 
 ThisBuild / organization     := "io.github.ramytanios"
 ThisBuild / organizationName := "ramytanios"
@@ -33,15 +33,16 @@ lazy val V = new {
 
 lazy val root = project.in(file("."))
   .aggregate(http, core.jvm, core.js)
-  .settings(publish / skip := true)
+  .settings(publish / skip := true, git.useGitDescribe := true)
   .enablePlugins(GitVersioning)
 
 lazy val http = project
   .in(file("http"))
   .enablePlugins(GitVersioning)
   .settings(
-    name := "tldev-http",
-    fork := true,
+    name               := "tldev-http",
+    git.useGitDescribe := true,
+    fork               := true,
     libraryDependencies ++=
       Seq(
         "org.typelevel" %% "log4cats-slf4j"      % V.log4cats,
@@ -69,8 +70,9 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .enablePlugins(GitVersioning)
   .settings(
-    name := "tldev-core",
-    fork := true,
+    name               := "tldev-core",
+    fork               := true,
+    git.useGitDescribe := true,
     libraryDependencies ++=
       Seq(
         "org.typelevel" %% "log4cats-slf4j"  % V.log4cats,
