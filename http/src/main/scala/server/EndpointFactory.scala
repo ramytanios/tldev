@@ -1,6 +1,7 @@
 package tldev.http.server
 
 import cats.effect.Concurrent
+import cats.effect.Temporal
 import cats.syntax.all.*
 import io.circe.*
 import io.circe.syntax.*
@@ -11,8 +12,12 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
 import org.http4s.server.websocket.WebSocketBuilder2
 import org.http4s.websocket.WebSocketFrame
+import scala.concurrent.duration.*
+import io.circe.parser.*
+import org.http4s.websocket.WebSocketFrame
+import org.http4s.websocket.WebSocketFrame.Ping
 
-final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F]:
+final class EndpointFactory[F[_]: Concurrent: Temporal]() extends Http4sDsl[F]:
 
   def jsonGet[Response: Encoder](
       path: String,
@@ -63,28 +68,23 @@ final class EndpointFactory[F[_]: Concurrent]() extends Http4sDsl[F]:
       override def relPath: Option[String] = Some(path)
 
   def jsonBidirectionalWebsocket[MessageIn: Decoder, MessageOut: Encoder](
-      in: fs2.Pipe[F, MessageIn, Unit],
-      out: fs2.Stream[F, MessageOut],
-      description: Option[String] = None,
-      prefix: String = "/ws"
+      receiveSend: fs2.Pipe[F, MessageIn, MessageOut],
+      prefix: String,
+      description: Option[String] = None
   ): Endpoint[F] =
     val route = (wsb: WebSocketBuilder2[F]) =>
       HttpRoutes.of[F]:
         case GET -> Root =>
-          val send: fs2.Stream[F, WebSocketFrame] =
-            out.map: message =>
-              WebSocketFrame.Text(message.asJson.noSpaces)
-
-          val receive: fs2.Pipe[F, WebSocketFrame, Unit] =
-            _.collect:
-              case WebSocketFrame.Text(msg, _) => msg.asJson.as[MessageIn]
-            .collect:
-              case Right(msg) => msg
-            .through(in)
-
-          wsb.build(send, receive)
+          val keepAlive = fs2.Stream.fixedDelay[F](5.seconds).map(_ => Ping())
+          wsb.build: (in: fs2.Stream[F, WebSocketFrame]) =>
+            in
+              .mergeHaltL(keepAlive)
+              .collect { case WebSocketFrame.Text(msg, _) => decode[MessageIn](msg) }
+              .collect { case Right(msg) => msg }
+              .through(receiveSend)
+              .map(msgOut => WebSocketFrame.Text(msgOut.asJson.noSpaces))
 
     new Endpoint[F]:
-      override def routes                  = (wsb: WebSocketBuilder2[F]) => Router(prefix -> route(wsb))
+      override def routes                  = (wsb: WebSocketBuilder2[F]) => Router(s"$prefix/ws" -> route(wsb))
       override def doc: Option[String]     = description
       override def relPath: Option[String] = None

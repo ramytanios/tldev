@@ -1,4 +1,3 @@
-
 import cats.effect.IO
 import cats.effect.IOApp
 import io.circe.Codec
@@ -19,23 +18,17 @@ object ServerMain extends IOApp.Simple:
     given Codec[Bar] = deriveCodec[Bar]
 
   override def run: IO[Unit] =
-
-    // endpoints
-    val ef = EndpointFactory[IO]
-    val foo = ef.jsonPost[Foo, Bar](
-      "foo",
-      foo =>
-        IO.fromOption(foo.x.toIntOption)(
-          new IllegalStateException("Input must be convertible to an integer")
-        ).map(Bar(_))
-    )
-
-    val endpoints = foo :: Nil
-
-    // config
-    val config = Config("localhost", 8090, 12)
-
-    // server
-    val httpServer = Server[IO](config, endpoints, None, None)
-
-    httpServer.run
+    Server[IO](
+      Config("localhost", 8090, 12),
+      List(
+        EndpointFactory[IO].jsonPost[Foo, Bar](
+          "foo",
+          foo =>
+            IO.fromOption(foo.x.toIntOption)(
+              new IllegalStateException("Input must be convertible to an integer")
+            ).map(Bar(_))
+        )
+      ),
+      None,
+      None
+    ).run

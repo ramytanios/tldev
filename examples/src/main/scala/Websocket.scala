@@ -1,4 +1,3 @@
-
 import cats.effect.IO
 import cats.effect.IOApp
 import tldev.core.implicits.given_LoggerFactory_F
@@ -11,22 +10,12 @@ import scala.concurrent.duration.*
 object WebsocketMain extends IOApp.Simple:
 
   override def run: IO[Unit] =
-
-    val ef = EndpointFactory[IO]
-
-    // websocket
-    val ws = ef.jsonBidirectionalWebsocket[String, String](
-      _.printlns,
-      fs2.Stream
-        .fixedDelay[IO](5.seconds)
-        .map: _ =>
-          "Hello World!"
-    )
-
-    // config
-    val config = Config("localhost", 8090, 12)
-
-    // server
-    val httpServer = Server[IO](config, ws :: Nil, None, None)
-
-    httpServer.run
+    Server[IO](
+      Config("localhost", 8090, 12),
+      List(EndpointFactory[IO].jsonBidirectionalWebsocket[String, String](
+        (in: fs2.Stream[IO, String]) => in,
+        "/api"
+      )),
+      None,
+      None
+    ).run
