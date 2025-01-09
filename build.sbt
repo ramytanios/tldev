@@ -1,15 +1,22 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
+Global / resolvers += "GitHub Package Registry" at "https://maven.pkg.github.com/ramytanios/tldev"
 
 lazy val scala3 = "3.3.1"
 ThisBuild / scalaVersion       := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
 
-// handled by sbt-git plugin
-// ThisBuild / version := "0.0.1-SNAPSHOT"
-
 ThisBuild / organization     := "io.github.ramytanios"
 ThisBuild / organizationName := "ramytanios"
-
+ThisBuild / publishTo := Some(
+  "GitHub Packages" at "https://maven.pkg.github.com/ramytanios/tldev"
+)
+ThisBuild / publishMavenStyle := true
+ThisBuild / credentials += Credentials(
+  "GitHub Package Registry",
+  "maven.pkg.github.com",
+  "ramytanios",
+  "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"
+)
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
