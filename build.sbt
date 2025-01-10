@@ -19,7 +19,9 @@ ThisBuild / credentials += Credentials(
 )
 
 ThisBuild / githubWorkflowEnv := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
-ThisBuild / githubWorkflowPublishCond := Some("contains(github.event.head_commit.message, '[publish]')")
+ThisBuild / githubWorkflowPublishCond := Some(
+  "contains(github.event.head_commit.message, '[publish]')"
+)
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
@@ -40,10 +42,11 @@ lazy val V = new {
   val log4cats      = "2.7.0"
   val logback       = "1.2.10"
   val literally     = "1.2.0"
+  val skunk         = "0.6.4"
 }
 
 lazy val root = project.in(file("."))
-  .aggregate(http, examples,core.jvm, core.js)
+  .aggregate(http, postgres, examples, core.jvm, core.js)
   .settings(publish / skip := true, git.useGitDescribe := true)
   .enablePlugins(GitVersioning)
 
@@ -72,6 +75,20 @@ lazy val http = project
         "org.http4s"    %% "http4s-circe"        % V.http4s,
         "org.http4s"    %% "http4s-ember-server" % V.http4s,
         "org.http4s"    %% "http4s-ember-client" % V.http4s
+      )
+  )
+  .dependsOn(core.jvm)
+
+lazy val postgres = project
+  .in(file("postgres"))
+  .enablePlugins(GitVersioning)
+  .settings(
+    name               := "tldev-postgres",
+    git.useGitDescribe := true,
+    libraryDependencies ++=
+      Seq(
+        "org.tpolecat" %% "skunk-core"  % V.skunk,
+        "org.tpolecat" %% "skunk-circe" % V.skunk
       )
   )
   .dependsOn(core.jvm)
