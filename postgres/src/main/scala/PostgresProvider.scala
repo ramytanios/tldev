@@ -13,16 +13,16 @@ import skunk.Session
 import tldev.core.EnvProvider
 
 trait PostgresProvider[F[_]]:
-  /** A query that returns a unique element * */
+  /** query that returns a unique row */
   def unique[A, B](q: Query[A, B], args: A): F[B]
 
-  /** A query that returns an optional element A */
+  /** query that might return an row */
   def option[A, B](q: Query[A, B], args: A): F[Option[B]]
 
-  /** A query that returns a stream of elements of type A */
+  /** query that returns a stream of rows */
   def stream[A, B](q: Query[A, B], args: A, chunk: Int = 128): fs2.Stream[F, B]
 
-  /** A command with args of type A */
+  /** command with args of type A */
   def command[A](c: Command[A], args: A): F[Unit]
 
 object PostgresProvider:
