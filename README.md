@@ -8,15 +8,17 @@ use directly the relevant libraries!
 > Currently only supports scala 3. You can try a [snapshot](https://github.com/ramytanios/tldev/packages)
 
 > [!IMPORTANT]
-> Unauthorized access to the Github Registry is not currently possible. The preferred method 
-> is to generate a Personal Access Token with `read:packages` permissions and set it as an 
-> environment variable `GITHUB_TOKEN`.
+> Unauthorized access to the Github Registry is currently not possible (See Github [discussion](https://github.com/orgs/community/discussions/26634)). The preferred method 
+> is to generate a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with `read:packages` permissions and set it as an 
+> environment variable, i.e: `GITHUB_TOKEN`.
+
+Add to `build.sbt`:
 ```scala
 Global / resolvers += "GitHub Package Registry" at "https://maven.pkg.github.com/ramytanios/tldev"
 ThisBuild / credentials += Credentials(
   "GitHub Package Registry",
   "maven.pkg.github.com",
-  "<GITHUB_USERNAME>",
+  "<YOUR_GITHUB_USERNAME>",
   sys.env.getOrElse("GITHUB_TOKEN", "")
 )
 ```
