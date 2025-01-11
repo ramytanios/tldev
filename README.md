@@ -22,9 +22,9 @@ ThisBuild / credentials += Credentials(
 ```
 
 ```scala
-"io.github.ramytanios" %% "tldev-http" % <VERSION>
-"io.github.ramytanios" %% "tldev-core" % <VERSION>
-"io.github.ramytanios" %% "tldev-postgres" % <VERSION>
+"io.github.ramytanios" %% "tldev-http" % "<VERSION>"
+"io.github.ramytanios" %% "tldev-core" % "<VERSION>"
+"io.github.ramytanios" %% "tldev-postgres" % "<VERSION>"
 ```
 
 ## Examples
