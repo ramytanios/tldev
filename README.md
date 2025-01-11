@@ -1,12 +1,12 @@
 # tldev
 
-A minimal set of utilities for developing microservices using the [typelevel](https://typelevel.org/) stack.
+A minimal set of utilities for developing microservices, built on top of the [Typelevel](https://typelevel.org/) stack.
 
 > [!NOTE]
 > Currently only supports scala 3. You can try a [snapshot](https://github.com/ramytanios/tldev/packages)
 
 > [!IMPORTANT]
-> Unauthorized access to the Github Registry is currently not possible (see Github [discussion](https://github.com/orgs/community/discussions/26634)). The preferred method 
+> Unauthorized access to the Github Registry is currently not possible (see [discussion](https://github.com/orgs/community/discussions/26634)). The preferred method 
 > is to generate a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with `read:packages` permissions and set it as an 
 > environment variable, i.e `GITHUB_TOKEN`.
 
@@ -24,6 +24,7 @@ ThisBuild / credentials += Credentials(
 ```scala
 "io.github.ramytanios" %% "tldev-http" % <VERSION>
 "io.github.ramytanios" %% "tldev-core" % <VERSION>
+"io.github.ramytanios" %% "tldev-postgres" % <VERSION>
 ```
 
 ## Examples
