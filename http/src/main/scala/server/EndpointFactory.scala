@@ -69,7 +69,6 @@ final class EndpointFactory[F[_]: Concurrent: Temporal]() extends Http4sDsl[F]:
 
   def jsonBidirectionalWebsocket[MessageIn: Decoder, MessageOut: Encoder](
       receiveSend: fs2.Pipe[F, MessageIn, MessageOut],
-      prefix: String,
       description: Option[String] = None
   ): Endpoint[F] =
     val route = (wsb: WebSocketBuilder2[F]) =>
@@ -85,6 +84,6 @@ final class EndpointFactory[F[_]: Concurrent: Temporal]() extends Http4sDsl[F]:
               .map(msgOut => WebSocketFrame.Text(msgOut.asJson.noSpaces))
 
     new Endpoint[F]:
-      override def routes                  = (wsb: WebSocketBuilder2[F]) => Router(s"$prefix/ws" -> route(wsb))
+      override def routes                  = (wsb: WebSocketBuilder2[F]) => Router("ws" -> route(wsb))
       override def doc: Option[String]     = description
       override def relPath: Option[String] = None
