@@ -13,13 +13,7 @@ package object postgres:
 
   object ev:
     given Conversion[ev, String] with
-      override def apply(x: ev): String = x match
-        case PG_HOST            => "PG_HOST"
-        case PG_PORT            => "PG_PORT"
-        case PG_USER            => "PG_USER"
-        case PG_PASS            => "PG_PASS"
-        case PG_URL             => "PG_URL"
-        case PG_MAX_CONNECTIONS => "PG_MAX_CONNECTIONS"
+      override def apply(x: ev): String = x.toString
 
   def configFromEnv[F[_]: MonadThrow](using
       env: EnvProvider[F]

@@ -11,11 +11,7 @@ package object server:
 
   object ev:
     given Conversion[ev, String] with
-      override def apply(x: ev): String = x match
-        case BE_HOST            => "BE_HOST"
-        case BE_PORT            => "BE_PORT"
-        case BE_MAX_CONNECTIONS => "BE_MAX_CONNECTIONS"
-        case BE_API_PREFIX      => "BE_API_PREFIX"
+      override def apply(x: ev): String = x.toString
 
   def configFromEnv[F[_]: MonadThrow](using
       env: EnvProvider[F]

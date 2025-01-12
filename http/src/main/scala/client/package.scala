@@ -13,8 +13,7 @@ package object client:
 
   object ev:
     given Conversion[ev, String] with
-      override def apply(x: ev): String = x match
-        case HTTP_CLIENT_TIMEOUT => "HTTP_CLIENT_TIMEOUT"
+      override def apply(x: ev): String = x.toString
 
   def configFromEnv[F[_]: MonadThrow](using
       env: EnvProvider[F]
