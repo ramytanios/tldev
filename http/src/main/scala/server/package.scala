@@ -6,14 +6,25 @@ import tldev.core.EnvProvider
 
 package object server:
 
+  enum ev:
+    case BE_HOST, BE_PORT, BE_MAX_CONNECTIONS, BE_API_PREFIX
+
+  object ev:
+    given Conversion[ev, String] with
+      override def apply(x: ev): String = x match
+        case BE_HOST            => "BE_HOST"
+        case BE_PORT            => "BE_PORT"
+        case BE_MAX_CONNECTIONS => "BE_MAX_CONNECTIONS"
+        case BE_API_PREFIX      => "BE_API_PREFIX"
+
   def configFromEnv[F[_]: MonadThrow](using
       env: EnvProvider[F]
   ): F[Either[EnvProvider.Error, Config]] =
     (
-      env.get[String]("BE_HOST"),
-      env.get[Int]("BE_PORT"),
-      env.get[Int]("BE_MAX_CONNECTIONS"),
-      env.get[String]("BE_API_PREFIX")
+      env.get[String](ev.BE_HOST),
+      env.get[Int](ev.BE_PORT),
+      env.get[Int](ev.BE_MAX_CONNECTIONS),
+      env.get[String](ev.BE_API_PREFIX)
     ).tupled.map(
       (
           host,
