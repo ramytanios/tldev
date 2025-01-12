@@ -6,6 +6,7 @@ import io.circe.syntax.*
 import tldev.http.client.*
 
 import java.time.LocalDate
+import scala.concurrent.duration.*
 
 object ClientMain extends IOApp.Simple:
 
@@ -20,7 +21,7 @@ object ClientMain extends IOApp.Simple:
 
   override def run: IO[Unit] =
 
-    val config = Config.default
+    val config = Config(Some(5.minutes))
 
     Client[IO](config).use: httpClient =>
       httpClient

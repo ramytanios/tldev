@@ -13,63 +13,60 @@ import EnvProvider.*
 
 trait EnvProvider[F[_]]:
 
-  /**
-   * access an environment variable,
-   * throws if it does not exist nor can't be parsed
-   */
-  def get[V](name: String)(using Parser[V]): F[V]
+  /** access an environment variable */
+  def get[V](name: String)(using Parser[V]): F[Either[Error, V]]
 
 object EnvProvider:
 
-  case class ParsingError(msg: String) extends IllegalArgumentException(msg) with NoStackTrace
+  enum Error(msg: String) extends IllegalArgumentException(msg):
+    case MissingEnv(env: String)   extends Error(s"missing env variable $env")
+    case ParsingError(msg: String) extends Error(msg)
 
   trait Parser[V]:
 
-    def parse(env: String): Either[ParsingError, V]
+    def parse(env: String): Either[Error, V]
 
   object Parser:
 
     def apply[V](using Parser[V]) = summon[Parser[V]]
 
     given Parser[String] with
-      override def parse(env: String): Either[ParsingError, String] = env.asRight[ParsingError]
+      override def parse(env: String): Either[Error, String] = env.asRight[Error]
 
     given Parser[Int] with
-      override def parse(env: String): Either[ParsingError, Int] =
+      override def parse(env: String): Either[Error, Int] =
         Either.catchOnly[NumberFormatException](env.toInt).leftMap(t =>
-          ParsingError(s"failed to parse $env to `Int`: $t")
+          Error.ParsingError(s"failed to parse $env to `Int`: $t")
         )
 
     given Parser[Long] with
-      override def parse(env: String): Either[ParsingError, Long] =
+      override def parse(env: String): Either[Error, Long] =
         Either.catchOnly[NumberFormatException](env.toLong).leftMap(t =>
-          ParsingError(s"failed to parse $env to `Long`: $t")
+          Error.ParsingError(s"failed to parse $env to `Long`: $t")
         )
 
     given Parser[Double] with
-      override def parse(env: String): Either[ParsingError, Double] =
+      override def parse(env: String): Either[Error, Double] =
         Either.catchOnly[NumberFormatException](env.toDouble).leftMap(t =>
-          ParsingError(s"failed to parse $env to `Double`")
+          Error.ParsingError(s"failed to parse $env to `Double`")
         )
 
     given Parser[FiniteDuration] with
-      override def parse(env: String): Either[ParsingError, FiniteDuration] =
+      override def parse(env: String): Either[Error, FiniteDuration] =
         Either.catchOnly[IllegalArgumentException](Duration(env))
-          .leftMap(e => ParsingError(e.getMessage))
+          .leftMap(e => Error.ParsingError(e.getMessage))
           .flatMap {
-            case d: FiniteDuration => d.asRight[ParsingError]
-            case _                 => Left(ParsingError(s"failed to parse $env to `FiniteDuration`"))
+            case d: FiniteDuration => d.asRight[Error]
+            case _                 => Left(Error.ParsingError(s"failed to parse $env to `FiniteDuration`"))
           }
 
   def default[F[_]: Env: MonadThrow]: EnvProvider[F] =
     new EnvProvider[F]:
-      override def get[V](name: String)(using p: Parser[V]): F[V] =
-        Env[F].get(name).flatMap(strMaybe =>
-          MonadThrow[F].fromOption(
-            strMaybe,
-            new RuntimeException(s"missing `${name}` env var")
-          )
-        ).flatMap(env => MonadThrow[F].fromEither(p.parse(env)))
+      override def get[V](name: String)(using p: Parser[V]): F[Either[Error, V]] =
+        Env[F].get(name).map {
+          case Some(str) => p.parse(str)
+          case None      => Error.MissingEnv(s"missing `${name}` env var").asLeft[V]
+        }
 
   def resource[F[_]: Env: MonadThrow]: Resource[F, EnvProvider[F]] =
     Resource.pure(this.default[F])

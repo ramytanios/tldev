@@ -13,6 +13,8 @@ import org.http4s.Uri
 import org.http4s.circe.CirceEntityCodec.*
 import org.http4s.ember.client.EmberClientBuilder
 
+import scala.concurrent.duration.*
+
 sealed trait Client[F[_]]:
 
   def get[R: Decoder](
@@ -33,7 +35,7 @@ object Client:
   def apply[F[_]: Network](config: Config)(using F: Async[F]): Resource[F, Client[F]] =
     EmberClientBuilder
       .default[F]
-      .withTimeout(config.timeout)
+      .withTimeout(config.timeout.getOrElse(5.minutes))
       .build
       .map: client =>
         new Client[F]:

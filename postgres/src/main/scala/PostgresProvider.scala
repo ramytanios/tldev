@@ -26,17 +26,17 @@ trait PostgresProvider[F[_]]:
   def command[A](c: Command[A], args: A): F[Unit]
 
 object PostgresProvider:
-  def resource[F[_]: Temporal: Network: Console](env: EnvProvider[F])
+  def resource[F[_]: Temporal: Network: Console](config: Config)
       : Resource[F, PostgresProvider[F]] =
     for
-      _              <- Resource.pure[F, Unit](())
-      host           <- env.get[String]("PG_HOST").toResource
-      port           <- env.get[Int]("PG_PORT").toResource
-      user           <- env.get[String]("PG_USR").toResource
-      pass           <- env.get[String]("PG_PASS").toResource
-      db             <- env.get[String]("PG_URL").toResource
-      maxConnections <- env.get[Int]("PG_MAX_CONNECTIONS").toResource
-      session        <- Session.pooled(host, port, user, db, Some(pass), maxConnections)
+      session <- Session.pooled(
+        config.host,
+        config.port,
+        config.user,
+        config.db,
+        Some(config.pass),
+        config.maxConnections
+      )
     yield new PostgresProvider[F]:
       override def unique[A, B](q: Query[A, B], args: A): F[B] =
         session.use(_.unique(q)(args))

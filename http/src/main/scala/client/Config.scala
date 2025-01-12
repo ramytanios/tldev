@@ -2,7 +2,4 @@ package tldev.http.client
 
 import scala.concurrent.duration.*
 
-case class Config(timeout: FiniteDuration)
-
-object Config:
-  def default: Config = Config(timeout = 5.minutes)
+case class Config(timeout: Option[FiniteDuration] = Option(5.minutes))
