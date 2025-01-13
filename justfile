@@ -34,3 +34,6 @@ gen-workflow:
 
 check-workflow:
   sbt githubWorkflowCheck
+
+publish: 
+  sbt publish
