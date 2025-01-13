@@ -1,27 +1,35 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
-// Global / resolvers += "GitHub Package Registry" at "https://maven.pkg.github.com/ramytanios/tldev"
 
 lazy val scala3 = "3.3.1"
+
+lazy val gh = new {
+  val resolver = "GitHub Packages" at "https://maven.pkg.github.com/ramytanios/tldev"
+  val realm    = "GitHub Package Registry"
+  val host     = "maven.pkg.github.com"
+  val username = "ramytanios"
+  val token    = sys.env.getOrElse("GH_TOKEN", "")
+}
+
 ThisBuild / scalaVersion       := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
 
-ThisBuild / organization     := "io.github.ramytanios"
-ThisBuild / organizationName := "ramytanios"
-ThisBuild / publishTo := Some(
-  "GitHub Packages" at "https://maven.pkg.github.com/ramytanios/tldev"
-)
+ThisBuild / organization      := "io.github.ramytanios"
+ThisBuild / organizationName  := "ramytanios"
+ThisBuild / publishTo         := Some(gh.resolver)
 ThisBuild / publishMavenStyle := true
-ThisBuild / credentials += Credentials(
-  "GitHub Package Registry",
-  "maven.pkg.github.com",
-  "ramytanios",
-  sys.env.getOrElse("GH_TOKEN", "")
-)
+ThisBuild / credentials += Credentials(gh.realm, gh.host, gh.host, gh.token)
 
 ThisBuild / githubWorkflowEnv := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
 ThisBuild / githubWorkflowPublishCond := Some(
   "contains(github.event.head_commit.message, '[publish]')"
 )
+ThisBuild / githubWorkflowGeneratedCI := WorkflowJob(
+  id = "quality-check",
+  name = "Scala fmt",
+  steps = List(WorkflowStep.Sbt(List("scalafmtCheckAll"))),
+  scalas = List(scala3),
+  matrixFailFast = Some(true)
+) +: (ThisBuild / githubWorkflowGeneratedCI).value
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision

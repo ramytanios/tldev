@@ -17,6 +17,18 @@ env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
+  quality-check:
+    name: Scala fmt
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+        scala: [3.3.1]
+        java: [zulu@8]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: sbt scalafmtCheckAll
+
   build:
     name: Build and Test
     strategy:
