@@ -18,7 +18,7 @@ env:
 
 jobs:
   quality-check:
-    name: Scala fmt
+    name: Code quality checks
     strategy:
       fail-fast: true
       matrix:
@@ -43,7 +43,11 @@ jobs:
       - name: Setup sbt
         uses: sbt/setup-sbt@v1
 
-      - run: sbt scalafmtCheckAll
+      - name: Scalafmt
+        run: sbt scalafmtCheckAll
+
+      - name: Scalafix
+        run: sbt scalafixAll --check
 
   build:
     name: Build and Test

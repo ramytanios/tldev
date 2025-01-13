@@ -25,11 +25,12 @@ ThisBuild / githubWorkflowPublishCond := Some(
 )
 ThisBuild / githubWorkflowGeneratedCI := WorkflowJob(
   id = "quality-check",
-  name = "Scala fmt",
+  name = "Code quality checks",
   steps = WorkflowStep.CheckoutFull ::
     WorkflowStep.SetupJava((ThisBuild / githubWorkflowJavaVersions).value.toList) :::
     WorkflowStep.SetupSbt() ::
-    WorkflowStep.Sbt(List("scalafmtCheckAll")) ::
+    WorkflowStep.Sbt(List("scalafmtCheckAll"), name = Some("Scala fmt")) ::
+    WorkflowStep.Sbt(List("scalafixAll", "--check"), name = Some("Scala fix")) ::
     Nil,
   scalas = List(scala3),
   matrixFailFast = Some(true)

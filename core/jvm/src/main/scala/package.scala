@@ -6,9 +6,6 @@ import org.typelevel.log4cats.Logger
 
 import scala.concurrent.duration.*
 
-
-
-
 package object core:
 
   def logProgress[F[_]: Temporal: Logger, V](
