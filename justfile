@@ -37,3 +37,6 @@ check-workflow:
 
 publish: 
   sbt publish
+
+readme: 
+  glow README.md
