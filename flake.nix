@@ -48,6 +48,9 @@
                   };
 
                 };
+                scripts.watch.exec = ''
+                  sbt '~compile'
+                '';
               }
             ];
           };
