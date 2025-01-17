@@ -56,6 +56,7 @@ lazy val V = new {
   val logback       = "1.2.10"
   val literally     = "1.2.0"
   val skunk         = "0.6.4"
+  val pureConfig    = "0.17.8"
 }
 
 lazy val root = project.in(file("."))
@@ -114,16 +115,21 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
     git.useGitDescribe := true,
     libraryDependencies ++=
       Seq(
-        "org.typelevel" %% "log4cats-slf4j"  % V.log4cats,
-        "ch.qos.logback" % "logback-classic" % V.logback,
-        "ch.qos.logback" % "logback-core"    % V.logback,
-        "org.typelevel" %% "cats-core"       % V.cats,
-        "org.typelevel" %% "cats-effect"     % V.catsEffect,
-        "org.typelevel" %% "cats-effect-std" % V.catsEffect,
-        "co.fs2"        %% "fs2-core"        % V.fs2,
-        "co.fs2"        %% "fs2-io"          % V.fs2,
-        "org.gnieh"     %% "fs2-data-csv"    % V.fs2data,
-        "org.typelevel" %% "literally"       % V.literally
+        "ch.qos.logback"         % "logback-classic"           % V.logback,
+        "ch.qos.logback"         % "logback-core"              % V.logback,
+        "org.typelevel"         %% "log4cats-slf4j"            % V.log4cats,
+        "org.typelevel"         %% "cats-core"                 % V.cats,
+        "org.typelevel"         %% "cats-effect"               % V.catsEffect,
+        "org.typelevel"         %% "cats-effect-std"           % V.catsEffect,
+        "co.fs2"                %% "fs2-core"                  % V.fs2,
+        "co.fs2"                %% "fs2-io"                    % V.fs2,
+        "org.gnieh"             %% "fs2-data-csv"              % V.fs2data,
+        "org.typelevel"         %% "literally"                 % V.literally,
+        "com.github.pureconfig" %% "pureconfig-core"           % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-cats"           % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-cats-effect"    % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-generic-base"   % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-generic-scala3" % V.pureConfig
       )
   )
 

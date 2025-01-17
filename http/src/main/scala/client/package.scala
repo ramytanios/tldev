@@ -15,6 +15,7 @@ package object client:
     given Conversion[ev, String] with
       override def apply(x: ev): String = x.toString
 
+  // expects `HTTP_CLIENT_TIMEOUT` environment variables to be set
   def configFromEnv[F[_]: MonadThrow](using
       env: EnvProvider[F]
   ): F[Either[EnvProvider.Error, Config]] =

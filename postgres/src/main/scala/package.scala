@@ -15,6 +15,8 @@ package object postgres:
     given Conversion[ev, String] with
       override def apply(x: ev): String = x.toString
 
+  // expects `PG_HOST`, `PG_PORT`, `PG_USER`, `PG_PASS`, `PG_URL` and `PG_MAX_CONNECTIONS`
+  // environment variables to be set
   def configFromEnv[F[_]: MonadThrow](using
       env: EnvProvider[F]
   ): F[Either[EnvProvider.Error, Config]] =

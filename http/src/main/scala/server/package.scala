@@ -13,6 +13,8 @@ package object server:
     given Conversion[ev, String] with
       override def apply(x: ev): String = x.toString
 
+  // expects `BE_HOST`, `BE_PORT`, `BE_MAX_CONNECTIONS` and `BE_API_PREFIX`
+  // environment variables to be set
   def configFromEnv[F[_]: MonadThrow](using
       env: EnvProvider[F]
   ): F[Either[EnvProvider.Error, Config]] =
