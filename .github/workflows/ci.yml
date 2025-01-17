@@ -47,7 +47,7 @@ jobs:
         run: sbt scalafmtCheckAll
 
       - name: Scala fix
-        run: sbt 'scalafixAll --check' --check
+        run: sbt 'scalafixAll --check'
 
   build:
     name: Build and Test
