@@ -43,10 +43,10 @@ jobs:
       - name: Setup sbt
         uses: sbt/setup-sbt@v1
 
-      - name: Scalafmt
+      - name: Scala fmt
         run: sbt scalafmtCheckAll
 
-      - name: Scalafix
+      - name: Scala fix
         run: sbt scalafixAll --check
 
   build:
