@@ -5,3 +5,5 @@ metals.sbt
 **/.scala-build/
 **/.bsp/
 **/dumps/
+.devenv/
+.direnv/

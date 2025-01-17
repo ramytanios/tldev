@@ -40,3 +40,6 @@ publish:
 
 readme: 
   glow README.md
+
+develop: 
+    nix develop --no-pure-eval
