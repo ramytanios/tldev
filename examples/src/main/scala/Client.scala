@@ -1,12 +1,12 @@
 import cats.effect.IO
 import cats.effect.IOApp
-import io.circe._
-import io.circe.generic.semiauto._
-import io.circe.syntax._
-import tldev.http.client._
+import io.circe.*
+import io.circe.generic.semiauto.*
+import io.circe.syntax.*
+import tldev.http.client.*
 
 import java.time.LocalDate
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 object ClientMain extends IOApp.Simple:
 

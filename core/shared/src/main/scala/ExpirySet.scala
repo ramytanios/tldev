@@ -2,14 +2,14 @@ package tldev.core
 
 import cats.effect.Resource
 import cats.effect.Temporal
-import cats.effect.implicits._
+import cats.effect.implicits.*
 import cats.effect.kernel.Fiber
 import cats.effect.std.Mutex
 import cats.effect.std.Supervisor
-import cats.syntax.all._
+import cats.syntax.all.*
 import fs2.concurrent.SignallingRef
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 trait ExpirySet[F[_], V]:
 

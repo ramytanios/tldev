@@ -1,11 +1,11 @@
 package tldev.core
 
 import cats.effect.Temporal
-import cats.effect.implicits._
+import cats.effect.implicits.*
 import cats.effect.kernel.Resource
 import cats.effect.std.Console
 import cats.effect.std.Queue
-import cats.syntax.all._
+import cats.syntax.all.*
 import org.typelevel.log4cats.LoggerFactory
 
 import scala.concurrent.duration.FiniteDuration

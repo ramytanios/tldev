@@ -2,7 +2,7 @@ package tldev.http.server
 
 import cats.data.Kleisli
 import cats.effect.kernel.Async
-import cats.implicits._
+import cats.implicits.*
 import com.comcast.ip4s.Host
 import com.comcast.ip4s.Port
 import fs2.io.net.Network
@@ -14,7 +14,7 @@ import org.http4s.server.Router
 import org.http4s.server.websocket.WebSocketBuilder2
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.LoggerFactory
-import org.typelevel.log4cats.syntax._
+import org.typelevel.log4cats.syntax.*
 
 final class Server[F[_]: Async: Network: LoggerFactory](
     config: Config,

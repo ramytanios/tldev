@@ -1,6 +1,6 @@
 package tldev.core
 
-import cats.syntax.all._
+import cats.syntax.all.*
 import org.typelevel.literally.Literally
 
 import java.time.LocalDate
