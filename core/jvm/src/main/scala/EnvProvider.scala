@@ -3,12 +3,12 @@ package tldev.core
 import cats.MonadThrow
 import cats.effect.kernel.Resource
 import cats.effect.std.Env
-import cats.syntax.all._
+import cats.syntax.all.*
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.FiniteDuration
 
-import EnvProvider._
+import EnvProvider.*
 
 trait EnvProvider[F[_]]:
 

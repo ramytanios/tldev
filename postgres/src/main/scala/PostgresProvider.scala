@@ -3,7 +3,7 @@ package tldev.postgres
 import cats.effect.Temporal
 import cats.effect.kernel.Resource
 import cats.effect.std.Console
-import cats.syntax.all._
+import cats.syntax.all.*
 import fs2.io.net.Network
 import natchez.Trace.Implicits.noop
 import skunk.Command

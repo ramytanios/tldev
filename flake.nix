@@ -48,9 +48,15 @@
                   };
 
                 };
-                scripts.watch.exec = ''
-                  sbt '~compile'
-                '';
+                scripts = {
+                  watch.exec = ''
+                    sbt '~compile'
+                  '';
+                  update-workflow.exec = ''
+                    sbt githubWorkflowGenerate
+                  '';
+                };
+
               }
             ];
           };

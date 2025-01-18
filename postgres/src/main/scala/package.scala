@@ -1,7 +1,7 @@
 package tldev
 
 import cats.MonadThrow
-import cats.syntax.all._
+import cats.syntax.all.*
 import tldev.core.EnvProvider
 
 package object postgres:
