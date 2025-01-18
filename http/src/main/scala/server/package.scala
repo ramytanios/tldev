@@ -1,7 +1,7 @@
 package tldev.http
 
 import cats.MonadThrow
-import cats.syntax.all.*
+import cats.syntax.all._
 import tldev.core.EnvProvider
 
 package object server:

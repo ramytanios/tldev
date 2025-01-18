@@ -1,6 +1,6 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-lazy val scala3 = "3.3.1"
+lazy val scala3 = "3.6.2"
 
 lazy val gh = new {
   val resolver = "GitHub Packages" at "https://maven.pkg.github.com/ramytanios/tldev"

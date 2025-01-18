@@ -2,18 +2,18 @@ package tldev.http.client
 
 import cats.effect.kernel.Async
 import cats.effect.kernel.Resource
-import cats.syntax.all.*
+import cats.syntax.all._
 import fs2.io.net.Network
 import io.circe.Decoder
 import io.circe.Encoder
-import io.circe.syntax.*
+import io.circe.syntax._
 import org.http4s.Method
 import org.http4s.Request
 import org.http4s.Uri
-import org.http4s.circe.CirceEntityCodec.*
+import org.http4s.circe.CirceEntityCodec._
 import org.http4s.ember.client.EmberClientBuilder
 
-import scala.concurrent.duration.*
+import scala.concurrent.duration._
 
 sealed trait Client[F[_]]:
 

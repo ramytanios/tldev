@@ -1,10 +1,8 @@
 package tldev
 
 import cats.MonadThrow
-import cats.syntax.all.*
+import cats.syntax.all._
 import tldev.core.EnvProvider
-
-import scala.concurrent.duration.FiniteDuration
 
 package object postgres:
 

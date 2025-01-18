@@ -1,10 +1,10 @@
 package tldev
 
 import cats.effect.kernel.Temporal
-import cats.syntax.all.*
+import cats.syntax.all._
 import org.typelevel.log4cats.Logger
 
-import scala.concurrent.duration.*
+import scala.concurrent.duration._
 
 package object core:
 

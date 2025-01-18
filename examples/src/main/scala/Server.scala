@@ -1,7 +1,7 @@
 import cats.effect.IO
 import cats.effect.IOApp
 import io.circe.Codec
-import io.circe.generic.semiauto.*
+import io.circe.generic.semiauto._
 import tldev.core.implicits.given_LoggerFactory_F
 import tldev.http.server.Config
 import tldev.http.server.EndpointFactory

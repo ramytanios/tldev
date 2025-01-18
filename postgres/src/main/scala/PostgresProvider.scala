@@ -1,16 +1,14 @@
 package tldev.postgres
 
 import cats.effect.Temporal
-import cats.effect.implicits.*
 import cats.effect.kernel.Resource
 import cats.effect.std.Console
-import cats.syntax.all.*
+import cats.syntax.all._
 import fs2.io.net.Network
 import natchez.Trace.Implicits.noop
 import skunk.Command
 import skunk.Query
 import skunk.Session
-import tldev.core.EnvProvider
 
 trait PostgresProvider[F[_]]:
   /** query that returns a unique row */
