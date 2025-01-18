@@ -7,8 +7,8 @@ import io.circe.*
 import io.circe.parser.*
 import io.circe.syntax.*
 import org.http4s.*
-import org.http4s.circe.CirceEntityCodec.*
 import org.http4s.circe.*
+import org.http4s.circe.CirceEntityCodec.*
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
 import org.http4s.server.websocket.WebSocketBuilder2
