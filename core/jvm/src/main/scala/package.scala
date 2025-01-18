@@ -8,6 +8,15 @@ import scala.concurrent.duration.*
 
 package object core:
 
+  def logo = """
+      | ____ __   ____ ____ _  _ 
+      |(_  _(  ) (    (  __/ )( \
+      |  )( / (_/\) D () _)\ \/ /
+      | (__)\____(____(____)\__/
+      | 
+      | Using tldev
+    """.stripMargin
+
   def logProgress[F[_]: Temporal: Logger, V](
       label: String,
       totalElements: Option[Long] = None,

@@ -1,12 +1,11 @@
 import cats.effect.IO
-import cats.effect.IOApp
 import tldev.core.ProgressReporter
 
 import scala.concurrent.duration.*
 
-object ProgressReporterMain extends IOApp.Simple:
+object Example3:
 
-  override def run: IO[Unit] =
+  def run: IO[Unit] =
     cats.effect.std.Queue
       .unbounded[IO, String]
       .flatMap: logQueue =>

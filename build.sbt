@@ -57,6 +57,7 @@ lazy val V = new {
   val literally     = "1.2.0"
   val skunk         = "0.6.4"
   val pureConfig    = "0.17.8"
+  val decline       = "2.5.0"
 }
 
 lazy val root = project.in(file("."))
@@ -130,13 +131,24 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
         "org.typelevel"         %% "literally"                 % V.literally,
         "com.github.pureconfig" %% "pureconfig-core"           % V.pureConfig,
         "com.github.pureconfig" %% "pureconfig-cats"           % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-yaml"           % V.pureConfig,
         "com.github.pureconfig" %% "pureconfig-cats-effect"    % V.pureConfig,
         "com.github.pureconfig" %% "pureconfig-generic-base"   % V.pureConfig,
-        "com.github.pureconfig" %% "pureconfig-generic-scala3" % V.pureConfig
+        "com.github.pureconfig" %% "pureconfig-generic-scala3" % V.pureConfig,
+        "com.monovore"          %% "decline"                   % V.decline,
+        "com.monovore"          %% "decline-effect"            % V.decline
       )
   )
 
 lazy val examples = project
   .in(file("examples"))
-  .settings(name := "examples", scalacOptions -= "-Xfatal-warnings", publishArtifact := false)
+  .settings(
+    name := "examples",
+    scalacOptions -= "-Xfatal-warnings",
+    publishArtifact := false,
+    libraryDependencies ++= List(
+      "com.monovore" %% "decline"        % V.decline,
+      "com.monovore" %% "decline-effect" % V.decline
+    )
+  )
   .dependsOn(http, core.jvm)

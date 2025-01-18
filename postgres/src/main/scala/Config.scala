@@ -1,5 +1,7 @@
 package tldev.postgres
 
+import pureconfig.ConfigReader
+
 case class Config(
     host: String,
     port: Int,
@@ -8,3 +10,6 @@ case class Config(
     db: String,
     maxConnections: Int
 )
+
+object Config:
+  given ConfigReader[Config] = ConfigReader.derived[Config]

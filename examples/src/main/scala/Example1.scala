@@ -1,5 +1,4 @@
 import cats.effect.IO
-import cats.effect.IOApp
 import io.circe.*
 import io.circe.generic.semiauto.*
 import io.circe.syntax.*
@@ -8,7 +7,7 @@ import tldev.http.client.*
 import java.time.LocalDate
 import scala.concurrent.duration.*
 
-object ClientMain extends IOApp.Simple:
+object Example1:
 
   case class FX(
       amount: Double,
@@ -19,7 +18,7 @@ object ClientMain extends IOApp.Simple:
   object FX:
     given Codec[FX] = deriveCodec[FX]
 
-  override def run: IO[Unit] =
+  def run: IO[Unit] =
 
     val config = Config(Some(5.minutes))
 
