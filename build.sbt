@@ -70,6 +70,7 @@ lazy val http = project
   .settings(
     name               := "tldev-http",
     git.useGitDescribe := true,
+    scalacOptions -= "-Xfatal-warnings",
     libraryDependencies ++=
       Seq(
         "org.typelevel" %% "log4cats-slf4j"      % V.log4cats,
@@ -99,6 +100,7 @@ lazy val postgres = project
   .settings(
     name               := "tldev-postgres",
     git.useGitDescribe := true,
+    scalacOptions -= "-Xfatal-warnings",
     libraryDependencies ++=
       Seq(
         "org.tpolecat" %% "skunk-core"  % V.skunk,
@@ -113,6 +115,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .settings(
     name               := "tldev-core",
     git.useGitDescribe := true,
+    scalacOptions -= "-Xfatal-warnings",
     libraryDependencies ++=
       Seq(
         "ch.qos.logback"         % "logback-classic"           % V.logback,
@@ -135,5 +138,5 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 
 lazy val examples = project
   .in(file("examples"))
-  .settings(name := "examples", publishArtifact := false)
+  .settings(name := "examples", scalacOptions -= "-Xfatal-warnings", publishArtifact := false)
   .dependsOn(http, core.jvm)

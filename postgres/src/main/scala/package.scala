@@ -25,4 +25,4 @@ package object postgres:
       pass           <- env.get[String](ev.PG_PASS)
       db             <- env.get[String](ev.PG_URL)
       maxConnections <- env.get[Int](ev.PG_MAX_CONNECTIONS)
-    yield (host, port, user, pass, db, maxConnections).tupled.map(Config.apply _)
+    yield (host, port, user, pass, db, maxConnections).tupled.map(Config.apply)

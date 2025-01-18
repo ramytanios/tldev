@@ -49,11 +49,14 @@
 
                 };
                 scripts = {
-                  watch.exec = ''
+                  compile-watch.exec = ''
                     sbt '~compile'
                   '';
                   update-workflow.exec = ''
                     sbt githubWorkflowGenerate
+                  '';
+                  git-clean.exec = ''
+                    git clean -Xdf
                   '';
                 };
 

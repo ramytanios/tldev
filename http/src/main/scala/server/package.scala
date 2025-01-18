@@ -40,5 +40,5 @@ package object server:
             case Left(s @ EnvProvider.Error.ParsingError(msg)) =>
               s.asLeft[Option[String]]
             case Right(v) => Option(v).asRight[EnvProvider.Error]
-        ).tupled.map(Config.apply _)
+        ).tupled.map(Config.apply)
     )
