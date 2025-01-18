@@ -1,7 +1,7 @@
 lazy val V = new {
   val tl           = "0.6.3"
-  val scalafix     = "0.12.1"
-  val scalafmt     = "2.5.2"
+  val scalafix     = "0.14.0"
+  val scalafmt     = "2.5.4"
   val mdoc         = "2.5.2"
   val updates      = "0.6.3"
   val scalajs      = "1.16.0"
