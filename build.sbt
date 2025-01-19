@@ -19,6 +19,7 @@ ThisBuild / publishTo         := Some(gh.resolver)
 ThisBuild / publishMavenStyle := true
 ThisBuild / credentials += Credentials(gh.realm, gh.host, gh.host, gh.token)
 
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.zulu("21"))
 ThisBuild / githubWorkflowEnv := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
 ThisBuild / githubWorkflowPublishCond := Some(
   "contains(github.event.head_commit.message, '[publish]')"
