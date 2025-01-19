@@ -1,6 +1,7 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val scala3 = "3.6.2"
+lazy val java   = JavaSpec.zulu("21")
 
 lazy val gh = new {
   val resolver = "GitHub Packages" at "https://maven.pkg.github.com/ramytanios/tldev"
@@ -19,8 +20,8 @@ ThisBuild / publishTo         := Some(gh.resolver)
 ThisBuild / publishMavenStyle := true
 ThisBuild / credentials += Credentials(gh.realm, gh.host, gh.host, gh.token)
 
-ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.zulu("21"))
-ThisBuild / githubWorkflowEnv := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
+ThisBuild / githubWorkflowJavaVersions := Seq(java)
+ThisBuild / githubWorkflowEnv          := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
 ThisBuild / githubWorkflowPublishCond := Some(
   "contains(github.event.head_commit.message, '[publish]')"
 )
@@ -34,6 +35,7 @@ ThisBuild / githubWorkflowGeneratedCI := WorkflowJob(
     WorkflowStep.Sbt(List("scalafixAll --check"), name = Some("Scala fix")) ::
     Nil,
   scalas = List(scala3),
+  javas = List(java),
   matrixFailFast = Some(true)
 ) +: (ThisBuild / githubWorkflowGeneratedCI).value
 
@@ -65,6 +67,36 @@ lazy val root = project.in(file("."))
   .aggregate(http, postgres, examples, core.jvm, core.js)
   .settings(publish / skip := true, git.useGitDescribe := true)
   .enablePlugins(GitVersioning)
+
+lazy val core = crossProject(JSPlatform, JVMPlatform)
+  .in(file("core"))
+  .enablePlugins(GitVersioning)
+  .settings(
+    name               := "tldev-core",
+    git.useGitDescribe := true,
+    scalacOptions -= "-Xfatal-warnings",
+    libraryDependencies ++=
+      Seq(
+        "ch.qos.logback"         % "logback-classic"           % V.logback,
+        "ch.qos.logback"         % "logback-core"              % V.logback,
+        "org.typelevel"         %% "log4cats-slf4j"            % V.log4cats,
+        "org.typelevel"         %% "cats-core"                 % V.cats,
+        "org.typelevel"         %% "cats-effect"               % V.catsEffect,
+        "org.typelevel"         %% "cats-effect-std"           % V.catsEffect,
+        "co.fs2"                %% "fs2-core"                  % V.fs2,
+        "co.fs2"                %% "fs2-io"                    % V.fs2,
+        "org.gnieh"             %% "fs2-data-csv"              % V.fs2data,
+        "org.typelevel"         %% "literally"                 % V.literally,
+        "com.github.pureconfig" %% "pureconfig-core"           % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-cats"           % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-yaml"           % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-cats-effect"    % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-generic-base"   % V.pureConfig,
+        "com.github.pureconfig" %% "pureconfig-generic-scala3" % V.pureConfig,
+        "com.monovore"          %% "decline"                   % V.decline,
+        "com.monovore"          %% "decline-effect"            % V.decline
+      )
+  )
 
 lazy val http = project
   .in(file("http"))
@@ -110,36 +142,6 @@ lazy val postgres = project
       )
   )
   .dependsOn(core.jvm)
-
-lazy val core = crossProject(JSPlatform, JVMPlatform)
-  .in(file("core"))
-  .enablePlugins(GitVersioning)
-  .settings(
-    name               := "tldev-core",
-    git.useGitDescribe := true,
-    scalacOptions -= "-Xfatal-warnings",
-    libraryDependencies ++=
-      Seq(
-        "ch.qos.logback"         % "logback-classic"           % V.logback,
-        "ch.qos.logback"         % "logback-core"              % V.logback,
-        "org.typelevel"         %% "log4cats-slf4j"            % V.log4cats,
-        "org.typelevel"         %% "cats-core"                 % V.cats,
-        "org.typelevel"         %% "cats-effect"               % V.catsEffect,
-        "org.typelevel"         %% "cats-effect-std"           % V.catsEffect,
-        "co.fs2"                %% "fs2-core"                  % V.fs2,
-        "co.fs2"                %% "fs2-io"                    % V.fs2,
-        "org.gnieh"             %% "fs2-data-csv"              % V.fs2data,
-        "org.typelevel"         %% "literally"                 % V.literally,
-        "com.github.pureconfig" %% "pureconfig-core"           % V.pureConfig,
-        "com.github.pureconfig" %% "pureconfig-cats"           % V.pureConfig,
-        "com.github.pureconfig" %% "pureconfig-yaml"           % V.pureConfig,
-        "com.github.pureconfig" %% "pureconfig-cats-effect"    % V.pureConfig,
-        "com.github.pureconfig" %% "pureconfig-generic-base"   % V.pureConfig,
-        "com.github.pureconfig" %% "pureconfig-generic-scala3" % V.pureConfig,
-        "com.monovore"          %% "decline"                   % V.decline,
-        "com.monovore"          %% "decline-effect"            % V.decline
-      )
-  )
 
 lazy val examples = project
   .in(file("examples"))
