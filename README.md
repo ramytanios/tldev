@@ -27,6 +27,13 @@ ThisBuild / credentials += Credentials(
 "io.github.ramytanios" %% "tldev-postgres" % "<VERSION>"
 ```
 
+## Development 
+> [!TIP]
+> For a smooth development experience and to benefit from the existing development shell, we recommend 
+> 1. Install [Nix](https://nix.dev/install-nix.html)
+> 1. Enable [Nix flakes](https://nixos.wiki/wiki/Flakes)
+> 3. Install [direnv](https://direnv.net/) 
+
 ## Examples
 
 Try the examples by running `examples/run` in sbt.
