@@ -1,3 +1,6 @@
+import org.typelevel.scalacoptions
+import org.typelevel.scalacoptions.ScalacOption
+
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val scala3 = "3.6.2"
@@ -42,6 +45,10 @@ ThisBuild / githubWorkflowGeneratedCI := WorkflowJob(
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
+ThisBuild / tpolecatExcludeOptions := Set(
+  ScalacOption("-Xfatal-warnings", (_: scalacoptions.ScalaVersion) => true)
+)
+
 lazy val V = new {
   val circe         = "0.14.6"
   val cats          = "2.12.0"
@@ -74,7 +81,6 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .settings(
     name               := "tldev-core",
     git.useGitDescribe := true,
-    scalacOptions -= "-Xfatal-warnings",
     libraryDependencies ++=
       Seq(
         "ch.qos.logback"         % "logback-classic"           % V.logback,
@@ -104,7 +110,6 @@ lazy val http = project
   .settings(
     name               := "tldev-http",
     git.useGitDescribe := true,
-    scalacOptions -= "-Xfatal-warnings",
     libraryDependencies ++=
       Seq(
         "org.typelevel" %% "log4cats-slf4j"      % V.log4cats,
@@ -134,7 +139,6 @@ lazy val postgres = project
   .settings(
     name               := "tldev-postgres",
     git.useGitDescribe := true,
-    scalacOptions -= "-Xfatal-warnings",
     libraryDependencies ++=
       Seq(
         "org.tpolecat" %% "skunk-core"  % V.skunk,
@@ -147,7 +151,6 @@ lazy val examples = project
   .in(file("examples"))
   .settings(
     name := "examples",
-    scalacOptions -= "-Xfatal-warnings",
     publishArtifact := false,
     libraryDependencies ++= List(
       "com.monovore" %% "decline"        % V.decline,
