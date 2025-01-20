@@ -1,7 +1,7 @@
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-lazy val scala3 = "3.6.2"
-lazy val java   = JavaSpec.zulu("21")
+lazy val scala3     = "3.6.2"
+lazy val jdkVersion = 21
 
 lazy val gh = new {
   val resolver = "GitHub Packages" at "https://maven.pkg.github.com/ramytanios/tldev"
@@ -11,33 +11,39 @@ lazy val gh = new {
   val token    = sys.env.getOrElse("GH_TOKEN", "")
 }
 
+ThisBuild / version := "0.0"
+
+ThisBuild / organization     := "io.github.ramytanios"
+ThisBuild / organizationName := "ramytanios"
+ThisBuild / startYear        := Some(2024)
+ThisBuild / developers       := List(tlGitHubDev("ramytanios", "Ramy Tanios"))
+
+ThisBuild / tlJdkRelease       := Some(jdkVersion)
 ThisBuild / scalaVersion       := scala3
 ThisBuild / crossScalaVersions := Seq(scala3)
 
-ThisBuild / organization      := "io.github.ramytanios"
-ThisBuild / organizationName  := "ramytanios"
 ThisBuild / publishTo         := Some(gh.resolver)
 ThisBuild / publishMavenStyle := true
 ThisBuild / credentials += Credentials(gh.realm, gh.host, gh.host, gh.token)
 
-ThisBuild / githubWorkflowJavaVersions := Seq(java)
-ThisBuild / githubWorkflowEnv          := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
-ThisBuild / githubWorkflowPublishCond := Some(
-  "contains(github.event.head_commit.message, '[publish]')"
-)
-ThisBuild / githubWorkflowGeneratedCI := WorkflowJob(
-  id = "quality-check",
-  name = "Code quality checks",
-  steps = WorkflowStep.CheckoutFull ::
-    WorkflowStep.SetupJava((ThisBuild / githubWorkflowJavaVersions).value.toList) :::
-    WorkflowStep.SetupSbt() ::
-    WorkflowStep.Sbt(List("scalafmtCheckAll"), name = Some("Scala fmt")) ::
-    WorkflowStep.Sbt(List("scalafixAll --check"), name = Some("Scala fix")) ::
-    Nil,
-  scalas = List(scala3),
-  javas = List(java),
-  matrixFailFast = Some(true)
-) +: (ThisBuild / githubWorkflowGeneratedCI).value
+// ThisBuild / githubWorkflowJavaVersions := Seq(java)
+// ThisBuild / githubWorkflowEnv          := Map("GH_TOKEN" -> "${{ secrets.GH_TOKEN }}")
+// ThisBuild / githubWorkflowPublishCond := Some(
+//   "contains(github.event.head_commit.message, '[publish]')"
+// )
+// ThisBuild / githubWorkflowGeneratedCI := WorkflowJob(
+//   id = "quality-check",
+//   name = "Code quality checks",
+//   steps = WorkflowStep.CheckoutFull ::
+//     WorkflowStep.SetupJava((ThisBuild / githubWorkflowJavaVersions).value.toList) :::
+//     WorkflowStep.SetupSbt() ::
+//     WorkflowStep.Sbt(List("scalafmtCheckAll"), name = Some("Scala fmt")) ::
+//     WorkflowStep.Sbt(List("scalafixAll --check"), name = Some("Scala fix")) ::
+//     Nil,
+//   scalas = List(scala3),
+//   javas = List(java),
+//   matrixFailFast = Some(true)
+// ) +: (ThisBuild / githubWorkflowGeneratedCI).value
 
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
@@ -65,16 +71,12 @@ lazy val V = new {
 
 lazy val root = project.in(file("."))
   .aggregate(http, postgres, examples, core.jvm, core.js)
-  .settings(publish / skip := true, git.useGitDescribe := true)
-  .enablePlugins(GitVersioning)
+  .settings(publish / skip := true)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
-  .enablePlugins(GitVersioning)
   .settings(
-    name               := "tldev-core",
-    git.useGitDescribe := true,
-    scalacOptions -= "-Xfatal-warnings",
+    name := "tldev-core",
     libraryDependencies ++=
       Seq(
         "ch.qos.logback"         % "logback-classic"           % V.logback,
@@ -100,11 +102,8 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 
 lazy val http = project
   .in(file("http"))
-  .enablePlugins(GitVersioning)
   .settings(
-    name               := "tldev-http",
-    git.useGitDescribe := true,
-    scalacOptions -= "-Xfatal-warnings",
+    name := "tldev-http",
     libraryDependencies ++=
       Seq(
         "org.typelevel" %% "log4cats-slf4j"      % V.log4cats,
@@ -130,11 +129,8 @@ lazy val http = project
 
 lazy val postgres = project
   .in(file("postgres"))
-  .enablePlugins(GitVersioning)
   .settings(
-    name               := "tldev-postgres",
-    git.useGitDescribe := true,
-    scalacOptions -= "-Xfatal-warnings",
+    name := "tldev-postgres",
     libraryDependencies ++=
       Seq(
         "org.tpolecat" %% "skunk-core"  % V.skunk,
@@ -146,8 +142,7 @@ lazy val postgres = project
 lazy val examples = project
   .in(file("examples"))
   .settings(
-    name := "examples",
-    scalacOptions -= "-Xfatal-warnings",
+    name            := "examples",
     publishArtifact := false,
     libraryDependencies ++= List(
       "com.monovore" %% "decline"        % V.decline,
