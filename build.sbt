@@ -1,5 +1,4 @@
 import org.typelevel.scalacoptions.*
-import org.typelevel.scalacoptions.{ ScalaVersion => tpoleScalaVersion }
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
