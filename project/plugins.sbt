@@ -9,7 +9,7 @@ lazy val V = new {
   val sbt          = "2.1.0"
   val actions      = "0.24.0"
   val release      = "1.4.0"
-  val tpolecat     = "0.5.1"
+  val tpolecat     = "0.5.2"
 }
 
 addSbtPlugin("com.timushev.sbt"   % "sbt-updates"              % V.updates)

@@ -1,5 +1,5 @@
-import org.typelevel.scalacoptions
-import org.typelevel.scalacoptions.ScalacOption
+import org.typelevel.scalacoptions.*
+import org.typelevel.scalacoptions.{ ScalaVersion => tpoleScalaVersion }
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -45,9 +45,7 @@ ThisBuild / githubWorkflowGeneratedCI := WorkflowJob(
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
-ThisBuild / tpolecatExcludeOptions := Set(
-  ScalacOption("-Xfatal-warnings", (_: scalacoptions.ScalaVersion) => true)
-)
+ThisBuild / tpolecatExcludeOptions := Set(ScalacOption("-Xfatal-warnings", _ => true))
 
 lazy val V = new {
   val circe         = "0.14.6"
@@ -150,7 +148,7 @@ lazy val postgres = project
 lazy val examples = project
   .in(file("examples"))
   .settings(
-    name := "examples",
+    name            := "examples",
     publishArtifact := false,
     libraryDependencies ++= List(
       "com.monovore" %% "decline"        % V.decline,
