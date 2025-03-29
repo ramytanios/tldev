@@ -39,19 +39,19 @@ class IndexedHashMap[K, A, V] private (
     attrs.foldLeft(this)((m, attr) => m - attr)
 
   def add(v: V): IndexedHashMap[K, A, V] =
-    val key  = this.key(v)
-    val attr = this.attr(v)
+    val kNew  = this.key(v)
+    val aNew = this.attr(v)
 
     // check for key change
     def keyChange(t: IndexedHashMap[K, A, V]) =
-      t.ak.get(attr).fold(this.build(t.kv + (key -> v), t.ak + (attr -> key))): kOld =>
-        this.build((t.kv - kOld) + (key -> v), t.ak + (attr -> key))
+      t.ak.get(aNew).fold(this.build(t.kv + (kNew -> v), t.ak + (aNew -> kNew))): kOld =>
+        this.build((t.kv - kOld) + (kNew -> v), t.ak + (aNew -> kNew))
 
     // check for attribute change
     def attrChange(t: IndexedHashMap[K, A, V]) =
-      t.kv.get(key).fold(keyChange(t)): vOld =>
-        val attrOld = this.attr(vOld)
-        this.build(t.kv + (key -> v), (t.ak - attrOld) + (attr -> key))
+      t.kv.get(kNew).fold(keyChange(t)): vOld =>
+        val aOld = this.attr(vOld)
+        this.build(t.kv + (kNew -> v), (t.ak - aOld) + (aNew -> kNew))
 
     attrChange(this)
 
