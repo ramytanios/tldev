@@ -39,7 +39,7 @@ class IndexedHashMap[K, A, V] private (
     attrs.foldLeft(this)((m, attr) => m - attr)
 
   def add(v: V): IndexedHashMap[K, A, V] =
-    val kNew  = this.key(v)
+    val kNew = this.key(v)
     val aNew = this.attr(v)
 
     // check for key change
