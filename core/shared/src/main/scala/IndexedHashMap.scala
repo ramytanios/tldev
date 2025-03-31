@@ -1,18 +1,16 @@
 package tldev.core
 
 import scala.collection.immutable.HashMap
+import scala.annotation.targetName
 
-class IndexedHashMap[K, A, V] private (
+class IndexedHashMap[K, A, E, V] private (
     private val key: V => K,
     private val attr: V => A,
     private val kv: HashMap[K, V],
-    private val ak: HashMap[A, K]
+    private val ak: HashMap[A, Either[E, K]]
 ):
 
-  require(kv.size == ak.size, "size mismatch!")
-
-  def size: Int = if kv.size == ak.size then kv.size
-  else throw new IllegalStateException("size mismatch. This is most likely a bug!")
+  def size: Int = ak.size
 
   def keys: Set[K] = kv.keySet
 
@@ -20,55 +18,65 @@ class IndexedHashMap[K, A, V] private (
 
   def values: List[V] = kv.values.toList
 
-  private def build(kvNew: HashMap[K, V], akNew: HashMap[A, K]) =
-    new IndexedHashMap[K, A, V](this.key, this.attr, kvNew, akNew)
+  private def build(kvNew: HashMap[K, V], akNew: HashMap[A, Either[E, K]]) =
+    new IndexedHashMap[K, A, E, V](this.key, this.attr, kvNew, akNew)
 
-  def apply(attr: A): V = this.get(attr).get
+  def apply(attr: A): Either[E, V] = this.get(attr).get
 
-  def get(attr: A): Option[V] = this.ak.get(attr).flatMap(this.kv.get)
+  @targetName("getByKey")
+  def get(key: K): Option[V] = this.kv.get(key)
 
-  def remove(attr: A): IndexedHashMap[K, A, V] =
-    ak.get(attr).fold(this): key =>
-      val akNew = ak - attr
-      val kvNew = kv - key
-      this.build(kvNew, akNew)
+  def get(attr: A): Option[Either[E, V]] = this.ak.get(attr).flatMap {
+    case Left(err) => Some(Left(err))
+    case Right(k)  => this.kv.get(k).map(Right(_))
+  }
 
-  def -(attr: A): IndexedHashMap[K, A, V] = this.remove(attr)
+  def remove(key: K): IndexedHashMap[K, A, E, V] =
+    this.kv.get(key).fold(this): value =>
+      this.build(kv - key, ak - this.attr(value))
 
-  def --(attrs: List[A]): IndexedHashMap[K, A, V] =
-    attrs.foldLeft(this)((m, attr) => m - attr)
+  def -(key: K): IndexedHashMap[K, A, E, V] = this.remove(key)
 
-  def add(v: V): IndexedHashMap[K, A, V] =
-    val kNew = this.key(v)
-    val aNew = this.attr(v)
+  def --(keys: List[K]): IndexedHashMap[K, A, E, V] =
+    keys.foldLeft(this)((m, key) => m - key)
 
-    // check for key change
-    def keyChange(t: IndexedHashMap[K, A, V]) =
-      t.ak.get(aNew).fold(this.build(t.kv + (kNew -> v), t.ak + (aNew -> kNew))): kOld =>
-        this.build((t.kv - kOld) + (kNew -> v), t.ak + (aNew -> kNew))
+  def add(v: V): IndexedHashMap[K, A, E, V] =
+    val keyNew  = this.key(v)
+    val attrNew = this.attr(v)
 
-    // check for attribute change
-    def attrChange(t: IndexedHashMap[K, A, V]) =
-      t.kv.get(kNew).fold(keyChange(t)): vOld =>
-        val aOld = this.attr(vOld)
-        this.build(t.kv + (kNew -> v), (t.ak - aOld) + (aNew -> kNew))
+    this.kv.get(keyNew).fold {
+      this.ak.get(attrNew).fold {
+        this.build(this.kv + (keyNew -> v), this.ak + (attrNew -> Right(keyNew)))
+      } {
+        case Left(_) =>
+          this.build(this.kv + (keyNew -> v), this.ak + (attrNew -> Right(keyNew)))
+        case Right(_) => throw new IllegalStateException(
+            "Adding an element with same attributes and different id is not allowed!"
+          )
+      }
+    } { vOld =>
+      val attrOld = this.attr(vOld)
+      this.build(this.kv + (keyNew -> v), (this.ak - attrOld) + (attrNew -> Right(keyNew)))
+    }
 
-    attrChange(this)
+  def +(v: V): IndexedHashMap[K, A, E, V] = this.add(v)
 
-  def +(v: V): IndexedHashMap[K, A, V] = this.add(v)
+  def ++(vs: List[V]): IndexedHashMap[K, A, E, V] = vs.foldLeft(this)((m, v) => m.add(v))
 
-  def ++(vs: List[V]): IndexedHashMap[K, A, V] = vs.foldLeft(this)((m, v) => m.add(v))
-
-  def updateWith(v: V)(f: Option[V] => Option[V]): IndexedHashMap[K, A, V] =
-    val attr = this.attr(v)
-    f(this.get(attr)) match
-      case None       => this.remove(attr)
-      case Some(vNew) => this.add(vNew)
+  def updatedWith(key: K)(f: Option[V] => Option[V]): IndexedHashMap[K, A, E, V] =
+    f(this.get(key)) match
+      case None    => this.remove(key)
+      case Some(v) => this.add(v)
 
 object IndexedHashMap:
 
-  def empty[K, A, V](key: V => K, attr: V => A): IndexedHashMap[K, A, V] =
-    new IndexedHashMap[K, A, V](key, attr, HashMap.empty[K, V], HashMap.empty[A, K])
+  def empty[K, A, E, V](key: V => K, attr: V => A): IndexedHashMap[K, A, E, V] =
+    new IndexedHashMap[K, A, E, V](
+      key,
+      attr,
+      HashMap.empty[K, V],
+      HashMap.empty[A, Either[E, K]]
+    )
 
-  def from[K, A, V](key: V => K, attr: V => A, vs: List[V]): IndexedHashMap[K, A, V] =
-    this.empty[K, A, V](key, attr) ++ vs
+  def from[K, A, E, V](key: V => K, attr: V => A, vs: List[V]): IndexedHashMap[K, A, E, V] =
+    this.empty[K, A, E, V](key, attr) ++ vs
