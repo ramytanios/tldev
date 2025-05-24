@@ -14,5 +14,6 @@ object Main extends MyIOApp.CommandIOApp("Examples", "Examples"):
         case 1 => Example1.run
         case 2 => Example2.run
         case 3 => Example3.run
+        case 4 => Example4.run
       }
       .map(_.as(ExitCode.Success))
