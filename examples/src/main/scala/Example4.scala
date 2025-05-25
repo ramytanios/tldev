@@ -1,7 +1,7 @@
+import cats.effect.IO
+import cats.syntax.all.*
 import tldev.core.Rand
 
-import cats.syntax.all.*
-import cats.effect.IO
 import scala.math.abs
 
 object Example4:

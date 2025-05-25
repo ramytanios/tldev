@@ -1,5 +1,6 @@
 package tldev.core
 
+import cats.Monad
 import cats.data.State
 import cats.syntax.all.*
 
@@ -7,7 +8,6 @@ import java.time.LocalDate
 import java.util.UUID
 import scala.collection.View
 import scala.util.Random
-import cats.Monad
 
 opaque type Rand[V] = State[Long, V]
 
@@ -17,7 +17,7 @@ object Rand:
 
   extension [V](r: Rand[V])
     def listOfN(n: Int): Rand[List[V]] = r.replicateA(n)
-    def runA                           = r.runA(init).value
+    def runA: V                        = r.runA(init).value
     def view: View[V] = View.unfold(init): s =>
       val (sNext, v) = r.run(s).value
       Some(v -> sNext)
