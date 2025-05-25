@@ -22,5 +22,5 @@ object Example4:
       .view
       .take(10)
       .zipWithIndex
-      .foreach((c, i) => println(c))
+      .foreach((c, _) => println(c))
   )
